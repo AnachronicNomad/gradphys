@@ -13,13 +13,20 @@ date: "2023-12-21"
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(fontawesome)
 ```
 
 # Background [WIP]
 
-WARNING:YELLOW_INFO
+::::{#WIP .alert .alert-warning}
 
+:::{.h3 .alert-heading .alert-warning}
+  `r fontawesome::fa('triangle-exclamation')` **Work in Progress**
+:::
+---
 **This article is currently a work in progress. Feel free to observe while it gets filled out!**
+::::
 
 # Data
 
