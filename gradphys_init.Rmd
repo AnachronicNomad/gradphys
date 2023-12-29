@@ -36,13 +36,13 @@ library(fontawesome)
 Data were gathered for the years **2015**-**2022**, accessed on 21 Dec 2023, in Excel spreadsheets available from the ***American Institute of Physics*** (**AIP**); via their [Roster of Physics Departments with Enrollment and Degree Data](https://www.aip.org/taxonomy/term/220).
 Due to the structure of the data reporting, enrollment data are considered aggregated for the traditional academic year (beginning in the Fall of the previous year and ending in the Spring of the listed year); in addition to an aggregate of all degree recipients, awarded or extant, for the calendar extent (Jan -\> Dec) of the listed year.
 
-For example, in the 2015 report, data regarding enrollments are the finalized numbers of the 2014-2015 academic year; plus all conferred Bachelors, MS, and PhD certificates from January thru December (inclusive) of the 2015 calendar year.
+For example, in the 2015 report, data regarding enrollments are the finalized numbers of the 2014-2015 academic year; plus all conferred Bachelors, MS, and PhD certificates from January through December (inclusive) of the 2015 calendar year.
 
 Datasheets were edited at an intermediary step to unify and homogenize data condensation into a [`tidy`](https://tidyr.tidyverse.org/) data set.
-Prior to **2017**, the `Highest Physics Degree Offered` field was not available in the survey.
+Prior to **2017**, the `Highest Physics Degree Offered` field and some associated enrollment data was not available in the survey.
 In our analysis, data were infilled on the condition that if a `Masters` or `PhD` degree certificate was conferred during those years, then the corresponding program at the appropriate level must have existed.
-The `Notes` annotations field was removed from this analysis, as the field appeared consistent across years, and after 2019 split into a separate datasheet of the same annual document - the `Notes` values and changelog are available at the source data.
-`Institution`-level data were adjusted for varying spellings/canonization over time (e.g. `Appl Phy` -\> `Appl Phys`), and `Coll -> U` if the institution re-designated.
+The `Notes` annotations field was removed from this analysis, as the field appeared consistent across years, and after 2019 split into a separate datasheet of the same annual report- the `Notes` values and changelog are available at the source data.
+`Institution`-level data were adjusted for varying spellings/canonization over time (e.g. `Appl Phy` -\> `Appl Phys`), and (`TODO :>`) `Coll -> U` if the institution re-designated in a later year .
 
 ## Table
 
