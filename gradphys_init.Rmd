@@ -200,7 +200,7 @@ shiny::fluidRow(
     htmltools::browsable(
       tagList(
         tags$button(
-          tagList(fontawesome::fa("download"), "CSV Data"),
+          tagList(fontawesome::fa("download"), "\tCSV Data"),
           onclick = "Reactable.downloadDataCSV('rosterphys14_22', 'rosterphys14_22.csv')"
         ),
       )
