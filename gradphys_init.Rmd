@@ -1,0 +1,390 @@
+---
+title: "gradphys"
+output: 
+  html_document: 
+    toc: true
+    keep_md: true
+    code_folding: hide
+    highlight: zenburn
+    theme: spacelab
+    number_sections: true
+date: "2023-12-21"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+# Background [WIP]
+
+WARNING:YELLOW_INFO
+
+**This article is currently a work in progress. Feel free to observe while it gets filled out!**
+
+# Data
+
+## Introduction
+
+Data were gathered for the years **2015**-**2022**, accessed on 21 Dec 2023, in Excel spreadsheets available from the ***American Institute of Physics*** (**AIP**); via their [Roster of Physics Departments with Enrollment and Degree Data](https://www.aip.org/taxonomy/term/220).
+Due to the structure of the data reporting, enrollment data are considered aggregated for the traditional academic year (beginning in the Fall of the previous year and ending in the Spring of the listed year); in addition to an aggregate of all degree recipients, awarded or extant, for the calendar extent (Jan -\> Dec) of the listed year.
+
+For example, in the 2015 report, data regarding enrollments are the finalized numbers of the 2014-2015 academic year; plus all conferred Bachelors, MS, and PhD certificates from January thru December (inclusive) of the 2015 calendar year.
+
+Datasheets were edited at an intermediary step to unify and homogenize data condensation into a [`tidy`](https://tidyr.tidyverse.org/) data set.
+Prior to **2017**, the `Highest Physics Degree Offered` field was not available in the survey.
+In our analysis, data were infilled on the condition that if a `Masters` or `PhD` degree certificate was conferred during those years, then the corresponding program at the appropriate level must have existed.
+The `Notes` annotations field was removed from this analysis, as the field appeared consistent across years, and after 2019 split into a separate datasheet of the same annual document - the `Notes` values and changelog are available at the source data.
+`Institution`-level data were adjusted for varying spellings/canonization over time (e.g. `Appl Phy` -\> `Appl Phys`), and `Coll -> U` if the institution re-designated.
+
+## Table
+
+Columns have summary metrics generated for groupings of observations, given an `Institution` over a set of `Year`s.
+These have been marked as **Accumulative** or **Averaged**.
+Data at the individual observation level (foreach `Institution`, foreach `Year`) ***have not yet been altered*** from their original values.
+
+```{r message=F, warning=F, message=F, paged.print=TRUE}
+library(tidyverse)
+library(reactable)
+library(ggplot2)
+library(plotly)
+library(htmltools)
+library(crosstalk)
+DATA_DIR = './data/xlsx_edit/'
+source('./process_data.R', local = knitr::knit_global())
+##########
+##-----##
+##----##
+##---##   Data Table
+##----##
+##-----##
+##########
+rosterdata <- process_data(DATA_DIR);
+tdata <- SharedData$new(rosterdata);
+
+#####
+##  Generate Reactable data table
+#####
+rxtbl <- tdata |>
+    reactable(
+        ####
+        ##  main table
+        ####
+        elementId = 'rosterphys14_22',
+        filterable = T,
+        searchable = T,
+        groupBy = c('State', 'Highest_Physics_Degree_Offered', 'Institution'),
+        bordered = T,
+        striped = T,
+        highlight = T,
+        compact = T,
+        pagination = F,
+        showPageSizeOptions = T,
+        pageSizeOptions = c(6, 12, 18),
+        paginationType = "jump",
+        height = 768,
+        defaultColDef = colDef(
+            header = function(value) gsub(".", " ", value, fixed = TRUE),
+            headerClass = "sticky",
+            cell = function(value) format(value, nsmall = 1),
+            align = "center",
+            minWidth = 100,
+            headerStyle = list(background = "#f7f7f8"),
+            vAlign = 'center',
+            headerVAlign = 'bottom',
+            format = colFormat(
+                separators = T,
+                digits = 0
+            )
+        ),
+        defaultSorted = list(
+            Year = 'asc',
+            Physics_PhDs = 'desc',
+            Physics_Bachelors = 'desc'
+        ),
+        defaultPageSize = 6,
+        minRows = 4,
+        ####
+        ##  Per-Column defns
+        ####
+        columns = list(
+          `Year` = colDef(
+            name = 'Year',
+            align = "center",
+            minWidth = 60,
+            sticky = "left"
+            ),
+          `Institution` = colDef(
+            name = 'Institution',
+            align = 'left',
+            minWidth = 240,
+            sticky = "left"
+            ),
+          `State` = colDef(
+            name = 'State',
+            align = 'center',
+            ),
+          `Highest_Physics_Degree_Offered` = colDef(
+            name = "Highest Physics Degree Offered",
+            aggregate = "unique",
+            align = 'center',
+            ),
+          `Fall_Total_Graduate_Student_Enrollments` = colDef(
+            name = "Total Grad Student Enrollment (Fall)\n(Averaged)",
+            aggregate = "mean",
+            align = 'left',
+            ),
+          `Physics_PhDs` = colDef(
+            name = "Physics PhDs\n(Accum)",
+            aggregate = "sum",
+            align = 'center',
+            format = colFormat(digits=0)
+            ),
+          `Exiting_Physics_Masters` = colDef(
+            name = "Exiting Physics Masters\n(Accum)",
+            aggregate = "sum",
+            align = 'center',
+            format = colFormat(digits=0)
+            ),
+          `Fall_FirstYear_Graduate_Student_Enrollments` = colDef(
+            name = "First-Year Grad Student Enrollment (Fall)\n(Averaged)",
+            aggregate = "mean",
+            align = "left",
+            ),
+          `Physics_Bachelors` = colDef(
+            name = "Physics Bachelors\n(Accum)",
+            aggregate = "sum",
+            align = "center",
+            format = colFormat(digits=0)
+            ),
+          `Fall_Senior_Enrollments` = colDef(
+            name = "Senior Enrollment (Fall)\n(Averaged)",
+            aggregate = "mean",
+            align = "center",
+            ),
+          `Fall_Junior_Enrollments` = colDef(
+            name = "Junior Enrollment (Fall)\n(Averaged)",
+            aggregate = "mean",
+            align = "center",
+            ),
+          `FirstTerm_Introductory_Physics_Course_Enrollments` = colDef(
+            name = "First-Term Intro Physics Course Enrollment\n(Averaged)",
+            aggregate = "mean",
+            align = "left"
+            ),
+          `FirstTerm_Introductory_Physical_Science_and_Astronomy_Course_Enrollments` = colDef(
+            name = "First-Term Intro Phys. Sci. and Astro. Course Enrollment\n(Averaged)",
+            aggregate = "mean",
+            align = "left"
+            ),
+          `Fall_NonUS_Graduate_Student_Enrollments` = colDef(
+            name = "Non-US Grad Student Enrollment (Fall)\n(Averaged)",
+            aggregate = "mean",
+            align = "left"
+            ),
+          `Astro_Program` = colDef(
+            name = "Astro Program?",
+            align = "right",
+            aggregate = "unique"
+            )
+        )
+    )
+
+#####
+##  Display Shiny with Crosstalk/htmltools widgets
+#####
+shiny::fluidRow(
+  shiny::column(
+    2,
+    
+    # CSV download button
+    htmltools::browsable(
+      tagList(
+        tags$button(
+          tagList(fontawesome::fa("download"), "CSV Data"),
+          onclick = "Reactable.downloadDataCSV('rosterphys14_22', 'rosterphys14_22.csv')"
+        ),
+      )
+    ),
+    
+    # Expand/Collapse button
+    htmltools::browsable(
+      tagList(
+        tags$button(
+          "Expand/Collapse",
+          onclick = "Reactable.toggleAllRowsExpanded('rosterphys14_22')"
+        ),
+      )
+    ),
+    
+    # filter-by degree
+    filter_checkbox("degree", "Degree Level", tdata, ~Highest_Physics_Degree_Offered),
+    
+    # filter-by state filter_select("st.", "State", tdata, ~State),
+    
+    # TODO :> allow column selection in this menu
+    
+    # Group Selection
+    htmltools::browsable(
+        tagList(
+            # Group-by selection
+            div(tags$label("Group by", `for` = "rosterphys14_22-select")),
+            tags$select(
+              id = "rosterphys14_22-select",
+              onchange = "Reactable.setGroupBy('rosterphys14_22', this.value ? [this.value] : [])",
+              tags$option("None", value = ""),
+              lapply(c("State", "Institution", "Highest_Physics_Degree_Offered"), tags$option)
+            ),
+        
+            tags$hr("aria-hidden" = "true")
+        )
+    ),
+  ),
+  shiny::column(
+    10,
+    rxtbl
+  )
+)
+```
+
+## Observations
+
+Multiple notes arise from a brief overview of this collection:
+
+### Summary of Degree Type by Unique Institutions
+
+```{r message=FALSE, warning=FALSE, paged.print=TRUE}
+print('TODO:> .')
+```
+
+-   A natural boundary to delineate the `r length(unique(rosterdata$Institution))` unique `Institutions` in this set is in the categorical division of `Highest Physics Degree Offered` (`BS`, `MS`, and `PhD`) in the most recent year of the roster publication. We will return to this Bayesian decision boundary of the search space later.
+
+### PhD Availability by Region
+
+```{r}
+print('TODO:> .')
+```
+
+-   There is at least one Institution in every state and territory, except the US Virgin Islands, that has a Physics PhD program. There are `TODO` unique `Institutions` offering a `PhD` as of `2022`.
+
+### Temporal Changes of Observations
+
+```{r}
+print('TODO:> .')
+```
+
+-   The University of Minnesota (MN) - Minneapolis offered a PhD through **2015-2019** (the past extent of the dataset), but is no longer part of the reported data set. However, the University of Minnesota - Twin Cities in **2020-Current**, despite having no data prior to 2020, produced similar numbers to the prior Institution. These should be merged for the purposes of this analysis, as if the Physics department is continuous through these years across both Institutions. Similar behavior occurs in a handful of other institutions.
+
+### Applied Physics Departments
+
+```{r}
+  print('TODO:> .')
+```
+
+-   Applied Physics PhDs are granted by a separate department housed in another College, of Engineering or similar, complementary to an Institution's existing Physics department. Only `6` Institutions of this type (for our analysis) exist: specifically `Stanford`, `Yale`, `Univ. Of Michigan - Ann Arbor`, `Columbia`, `Cornell`, and `Rice` Universities.
+
+### Top 10 States by accumulative `Physics PhDs`
+
+```{r}
+print('TODO:> .')
+```
+
+-   The Top 10 ranking of cumulative production over the past decade of Physics PhDs is, in descending order: `CA` (1926), `NY` (1154), `MA` (1105), `TX` (907), `IL` (700), `FL` (700), `PA` (623), `OH` (599), `MI` (530), and `CO` (419). We should ensure we perform a population-corrected analysis of the per-capita rate of completing a PhD in these states. Interestingly, this ranking is disjoint from the same ordering for the production of Physics Bachelors. Yet another ranking is produced when ordered by descending quantity of the three degree levels (`BS`, `MS`, and `PhD`).
+
+### Top 20 Institutions by accumulative `Physics_PhDs`
+
+```{r}
+# TODO :> TOP 20 ranking
+```
+
+-   The Top 20 ranking Institutions of cumulative production over the past decade ordered by `PhD`, then followed by `BS` degrees conferred are:
+
+| **`Institution`**           | **`Physics PhDs`** | `Physics Bachelors` |
+|-----------------------------|:------------------:|:-------------------:|
+| `CA-U of, Berkeley`         |        286         |         931         |
+| `IL-U of, Urbana/Champaign` |        270         |        1129         |
+| `Colorado-U of, Boulder`    |        263         |         663         |
+| `Harvard U`                 |        262         |         423         |
+| `Ohio State U`              |        252         |         586         |
+| `Maryland-U of, Coll Park`  |        241         |         576         |
+| `Stanford U`                |        225         |         197         |
+| `Texas-U of, at Austin`     |        186         |         635         |
+| `Mass Inst of Tech (MIT)`   |        184         |         376         |
+| `Cornell U`                 |        182         |         368         |
+| `Chicago-U of`              |        181         |         449         |
+| `WI-U of, Madison`          |        181         |         387         |
+| `Michigan-U of, Ann Arbor`  |        180         |         439         |
+| `CA-U of, Los Angeles`      |        170         |         644         |
+| `SUNY-Stony Brook`          |        169         |         423         |
+| `CA-U of, San Diego`        |        169         |         405         |
+| `Texas A&M-College Station` |        168         |         265         |
+| `Washington-U of`           |        163         |        1286         |
+| `Princeton U`               |        161         |         203         |
+| `Florida State U`           |        160         |         165         |
+
+-   `TODO :>` How many departments inconsistently reported data?
+
+-   `TODO :>` How many departments ceased reporting per each year, any departments end their `PhD` or `BS` program?
+
+-   `TODO :>` COVID-19 impacts?
+
+-   `TODO :>` Frequency Distribution of PhDs
+
+-   `TODO :>` Top 10 by accumulative Physics Bachelors?
+    Frequency Distribution?
+
+    -   what the f is going on with the higher number of exiting physics masters (like U Washington)?
+
+-   `TODO :>` Filter by latest year reported + frequency graph/histogram by year, earliest year reported, all NA (e.g., dead departments, no reports, new depts).
+
+## Targeted Adjustments
+
+-   flow across all years to fix misspells & names
+
+## Additional Data
+
+-   Faculty count?
+-   Department Specialties?
+-   Undergraduate population total enrollments?
+-   County of State that Institution is located in
+-   Median Salary of surrounding
+-   Percentile of Median Salary of county relative to State
+-   Relative to Country?
+-   Median Rent of surrounding
+-   \% vote in last election?
+-   Political Party of governor?
+-   Online Program availability?
+-   Has nearby or attached National Lab
+
+------------------------------------------------------------------------
+
+# Methods
+
+## Problem-Domain Adjusted and Summary Metrics
+
+### Resiliency and Conversion Scores
+
+### Per-Capita PhDs Conferred vs. Undergrad Physics Enrollment Population
+
+------------------------------------------------------------------------
+
+## Time-Series Regression
+
+------------------------------------------------------------------------
+
+## Bollinger-Bands Volatility Metric
+
+------------------------------------------------------------------------
+
+# Analysis
+
+------------------------------------------------------------------------
+
+# Results
+
+------------------------------------------------------------------------
+
+# Future Work
+
+------------------------------------------------------------------------
+
+# References
