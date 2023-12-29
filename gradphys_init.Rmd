@@ -19,14 +19,15 @@ library(fontawesome)
 
 # Background [WIP]
 
-::::{#WIP .alert .alert-warning}
-
-:::{.h3 .alert-heading .alert-warning}
-  `r fontawesome::fa('triangle-exclamation')` **Work in Progress**
+::: {#WIP .alert .alert-warning}
+::: {.h3 .alert-heading .alert-warning}
+`r fontawesome::fa('triangle-exclamation')` **Work in Progress**
 :::
----
+
+------------------------------------------------------------------------
+
 **This article is currently a work in progress. Feel free to observe while it gets filled out!**
-::::
+:::
 
 # Data
 
@@ -272,6 +273,7 @@ print('TODO:> .')
 ```
 
 -   There is at least one Institution in every state and territory, except the US Virgin Islands, that has a Physics PhD program. There are `TODO` unique `Institutions` offering a `PhD` as of `2022`.
+-   `TODO :>` Use shapefiles to demonstrate gradient of universities and availability of programs
 
 ### Temporal Changes of Observations
 
@@ -303,7 +305,7 @@ print('TODO:> .')
 # TODO :> TOP 20 ranking
 ```
 
--   The Top 20 ranking Institutions of cumulative production over the past decade ordered by `PhD`, then followed by `BS` degrees conferred are:
+-   The Top 20 ranking Institutions of cumulative production over the past decade ordered by `PhD`, alongside accumulative `BS` degrees conferred are:
 
 | **`Institution`**           | **`Physics PhDs`** | `Physics Bachelors` |
 |-----------------------------|:------------------:|:-------------------:|
@@ -361,6 +363,8 @@ print('TODO:> .')
 -   Political Party of governor?
 -   Online Program availability?
 -   Has nearby or attached National Lab
+-   Link to faculty/dept page
+-   
 
 ------------------------------------------------------------------------
 
@@ -368,9 +372,15 @@ print('TODO:> .')
 
 ## Problem-Domain Adjusted and Summary Metrics
 
+-   `TODO :>` Ratio of Accumulative PhDs produced over timeframe to average number of graduate students enrolled per year
+
+-   `TODO :>` Interpolation across NA rows?
+
 ### Resiliency and Conversion Scores
 
 ### Per-Capita PhDs Conferred vs. Undergrad Physics Enrollment Population
+
+### Altered Data
 
 ------------------------------------------------------------------------
 
