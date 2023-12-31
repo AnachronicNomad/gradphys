@@ -151,7 +151,16 @@ process_data <- \(DATA_DIR) {
     ##  transform `Appl Phy` -> `Appl Phys`
     #####
     mutate(
-        Institution = gsub("(\\(Appl Phy\\))", "\\(Appl Phys\\)", Institution)
+      Institution = gsub("(\\(Appl Phy\\))", "\\(Appl Phys\\)", Institution)
+    ) |>
+    #####
+    ##  transform Institution name `College` -> `Coll`, drop apostrophe
+    #####
+    mutate(
+      Institution = gsub("(College(s){0,1})", "Coll", Institution)
+    ) |>
+    mutate(
+      Institution = gsub("'", '', Institution)
     ) |>
 
     #####

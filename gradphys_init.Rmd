@@ -42,7 +42,7 @@ Datasheets were edited at an intermediary step to unify and homogenize data cond
 Prior to **2017**, the `Highest Physics Degree Offered` field and some associated enrollment data was not available in the survey.
 In our analysis, data were infilled on the condition that if a `Masters` or `PhD` degree certificate was conferred during those years, then the corresponding program at the appropriate level must have existed.
 The `Notes` annotations field was removed from this analysis, as the field appeared consistent across years, and after 2019 split into a separate datasheet of the same annual report- the `Notes` values and changelog are available at the source data.
-`Institution`-level data were adjusted for varying spellings/canonization over time (e.g. `Appl Phy` -\> `Appl Phys`), and (`TODO :>`) `Coll -> U` if the institution re-designated in a later year .
+`Institution`-level data were adjusted for varying spellings/canonization over time (e.g. `Appl Phy` -\> `Appl Phys`), and (`TODO :>`) `Coll -> U` if the institution re-designated in a later year.
 
 ## Table
 
@@ -77,10 +77,10 @@ rxtbl <- tdata |>
         ####
         ##  main table
         ####
-        elementId = 'rosterphys14_22',
+        elementId = 'rosterphys14_22-tbl',
         filterable = T,
-        searchable = T,
-        groupBy = c('State', 'Highest_Physics_Degree_Offered', 'Institution'),
+        #searchable = T,
+        groupBy = c('Institution'),
         bordered = T,
         striped = T,
         highlight = T,
@@ -119,7 +119,9 @@ rxtbl <- tdata |>
             name = 'Year',
             align = "center",
             minWidth = 60,
-            sticky = "left"
+            sticky = "left",
+            sortable = T,
+            defaultSortOrder = "asc"
             ),
           `Institution` = colDef(
             name = 'Institution',
@@ -203,34 +205,9 @@ rxtbl <- tdata |>
 shiny::fluidRow(
   shiny::column(
     2,
-    
-    # CSV download button
-    htmltools::browsable(
-      tagList(
-        tags$button(
-          tagList(fontawesome::fa("download"), "\tCSV Data"),
-          onclick = "Reactable.downloadDataCSV('rosterphys14_22', 'rosterphys14_22.csv')"
-        ),
-      )
-    ),
-    
-    # Expand/Collapse button
-    htmltools::browsable(
-      tagList(
-        tags$button(
-          "Expand/Collapse",
-          onclick = "Reactable.toggleAllRowsExpanded('rosterphys14_22')"
-        ),
-      )
-    ),
-    
     # filter-by degree
     filter_checkbox("degree", "Degree Level", tdata, ~Highest_Physics_Degree_Offered),
-    
-    # filter-by state filter_select("st.", "State", tdata, ~State),
-    
     # TODO :> allow column selection in this menu
-    
     # Group Selection
     htmltools::browsable(
         tagList(
@@ -238,17 +215,38 @@ shiny::fluidRow(
             div(tags$label("Group by", `for` = "rosterphys14_22-select")),
             tags$select(
               id = "rosterphys14_22-select",
-              onchange = "Reactable.setGroupBy('rosterphys14_22', this.value ? [this.value] : [])",
+              onchange = "Reactable.setGroupBy('rosterphys14_22-tbl', this.value ? [this.value] : [])",
               tags$option("None", value = ""),
-              lapply(c("State", "Institution", "Highest_Physics_Degree_Offered"), tags$option)
+              tags$option("Institution", value = "Institution"),
+              tags$option("Program", value = "Highest_Physics_Degree_Offered"),
+              tags$option("State", value = "State"),
             ),
-        
             tags$hr("aria-hidden" = "true")
         )
     ),
   ),
   shiny::column(
     10,
+    shiny::fluidRow(
+      # CSV download button
+      htmltools::browsable(
+        tagList(
+          tags$button(
+            tagList(fontawesome::fa("download"), "\tCSV Data"),
+            onclick = "Reactable.downloadDataCSV('rosterphys14_22-tbl', 'rosterphys14_22.csv')"
+          ),
+        )
+      ),
+      # Expand/Collapse button
+      htmltools::browsable(
+        tagList(
+          tags$button(
+            "Expand/Collapse",
+            onclick = "Reactable.toggleAllRowsExpanded('rosterphys14_22')"
+          ),
+        )
+      ),
+    ),
     rxtbl
   )
 )
@@ -264,7 +262,7 @@ Multiple notes arise from a brief overview of this collection:
 print('TODO:> .')
 ```
 
--   A natural boundary to delineate the `r length(unique(rosterdata$Institution))` unique `Institutions` in this set is in the categorical division of `Highest Physics Degree Offered` (`BS`, `MS`, and `PhD`) in the most recent year of the roster publication. We will return to this Bayesian decision boundary of the search space later.
+-   A natural boundary to delineate the `r length(unique(rosterdata$Institution))` unique `Institutions` in this set is in the categorical division of `Highest Physics Degree Offered` (`BS`, `MS`, and `PhD`) in the most recent year of the roster publication. We will return to this Bayesian decision boundary of the search space later. Furthermore, we will consider `PhD`-granting `Institution`s as separate from the combined group of `BS/MS`-granting \`Institution\`s
 
 ### PhD Availability by Region
 
@@ -358,7 +356,8 @@ print('TODO:> .')
 
 -   Voronoi-Cell approximation of nearest PhD or BS
 
--   Department Specialties? \<- n-gram analysis
+-   Department Specialties?
+    \<- n-gram analysis
 
 -   Undergraduate population total enrollments?
 
