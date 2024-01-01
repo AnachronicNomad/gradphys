@@ -33,22 +33,38 @@ library(fontawesome)
 
 ## Introduction
 
-Data were gathered for the years **2015**-**2022**, accessed on 21 Dec 2023, in Excel spreadsheets available from the ***American Institute of Physics*** (**AIP**); via their [Roster of Physics Departments with Enrollment and Degree Data](https://www.aip.org/taxonomy/term/220).
-Due to the structure of the data reporting, enrollment data are considered aggregated for the traditional academic year (beginning in the Fall of the previous year and ending in the Spring of the listed year); in addition to an aggregate of all degree recipients, awarded or extant, for the calendar extent (Jan -\> Dec) of the listed year.
+Data were gathered for the years **2015**-**2022**, accessed on 21 Dec 2023, in Excel spreadsheets available from the
+***American Institute of Physics*** (**AIP**); via their [Roster of Physics Departments with Enrollment and Degree
+Data](https://www.aip.org/taxonomy/term/220). Due to the structure of the data reporting, enrollment data are considered
+aggregated for the traditional academic year (beginning in the Fall of the previous year and ending in the Spring of the
+listed year); in addition to an aggregate of all degree recipients, awarded or extant, for the calendar extent (Jan ->
+Dec) of the listed year.
 
-For example, in the 2015 report, data regarding enrollments are the finalized numbers of the 2014-2015 academic year; plus all conferred Bachelors, MS, and PhD certificates from January through December (inclusive) of the 2015 calendar year.
+For example, in the 2015 report, data regarding enrollments are the finalized numbers of the 2014-2015 academic year;
+plus all conferred Bachelors, MS, and PhD certificates from January through December (inclusive) of the 2015 calendar
+year.
 
-Datasheets were edited at an intermediary step to unify and homogenize data condensation into a [`tidy`](https://tidyr.tidyverse.org/) data set.
-Prior to **2017**, the `Highest Physics Degree Offered` field and some associated enrollment data was not available in the survey.
-In our analysis, data were infilled on the condition that if a `Masters` or `PhD` degree certificate was conferred during those years, then the corresponding program at the appropriate level must have existed.
-The `Notes` annotations field was removed from this analysis, as the field appeared consistent across years, and after 2019 split into a separate datasheet of the same annual report- the `Notes` values and changelog are available at the source data.
-`Institution`-level data were adjusted for varying spellings/canonization over time (e.g. `Appl Phy` -\> `Appl Phys`), and (`TODO :>`) `Coll -> U` if the institution re-designated in a later year.
+Datasheets were edited at an intermediary step to unify and homogenize data condensation into a
+[`tidy`](https://tidyr.tidyverse.org/) data set. Prior to **2017**, the `Highest Physics Degree Offered` field and some
+associated enrollment data was not available in the survey. In our analysis, data were infilled on the condition that if
+a `Masters` or `PhD` degree certificate was conferred during those years, then the corresponding program at the
+appropriate level must have existed. The `Notes` annotations field was removed from this analysis, as the field appeared
+consistent across years, and after 2019 split into a separate datasheet of the same annual report- the `Notes` values
+and changelog are available at the source data. `Institution`-level data were adjusted for varying
+spellings/canonization over time (e.g. `Appl Phy` -\> `Appl Phys`), and (`TODO :>`) `Coll -> U` if the institution
+re-designated in a later year.
+
+The process used to incorporate this data is encoded in a function, `process_data(...)`, demonstrated in the following R
+script:
+
+```{r, file=c('process_data.R')}
+```
 
 ## Table
 
 Columns have summary metrics generated for groupings of observations, given an `Institution` over a set of `Year`s.
-These have been marked as **Accumulative** or **Averaged**.
-Data at the individual observation level (foreach `Institution`, foreach `Year`) ***have not yet been altered*** from their original values.
+These have been marked as **Accumulative** or **Averaged**. Data at the individual observation level (foreach
+`Institution`, foreach `Year`) ***have not yet been altered*** from their original values.
 
 ```{r message=F, warning=F, message=F, paged.print=TRUE}
 library(tidyverse)
@@ -262,49 +278,66 @@ Multiple notes arise from a brief overview of this collection:
 print('TODO:> .')
 ```
 
--   A natural boundary to delineate the `r length(unique(rosterdata$Institution))` unique `Institutions` in this set is in the categorical division of `Highest Physics Degree Offered` (`BS`, `MS`, and `PhD`) in the most recent year of the roster publication. We will return to this Bayesian decision boundary of the search space later. Furthermore, we will consider `PhD`-granting `Institution`s as separate from the combined group of `BS/MS`-granting \`Institution\`s
+- A natural boundary to delineate the `r length(unique(rosterdata$Institution))` unique `Institutions` in this set is in
+  the categorical division of `Highest Physics Degree Offered` (`BS`, `MS`, and `PhD`) in the most recent year of the
+  roster publication. We will return to this Bayesian decision boundary of the search space later. Furthermore, we will
+  consider `PhD`-granting `Institution`s as separate from the combined group of `BS/MS`-granting `Institution`s
 
 ### PhD Availability by Region
 
-```{r}
+```{r message=FALSE, warning=FALSE, paged.print=TRUE}
 print('TODO:> .')
 ```
 
--   There is at least one Institution in every state and territory, except the US Virgin Islands, that has a Physics PhD program. There are `TODO` unique `Institutions` offering a `PhD` as of `2022`.
--   `TODO :>` Use shapefiles to demonstrate gradient of universities and availability of programs
-    -   Maybe leave this summary graphic until County-level data is established.
+- There is at least one Institution in every state and territory, except the US Virgin Islands, that has a Physics PhD
+  program. There are `TODO` unique `Institutions` offering a `PhD` as of `2022`.
+  
+- `TODO :>` Use shapefiles to demonstrate gradient of universities and availability of programs
+  - Maybe leave this summary graphic until County-level data is established.
 
 ### Temporal Changes of Observations
 
-```{r}
+```{r message=FALSE, warning=FALSE, paged.print=TRUE}
 print('TODO:> .')
 ```
 
--   The University of Minnesota (MN) - Minneapolis offered a PhD through **2015-2019** (the past extent of the dataset), but is no longer part of the reported data set. However, the University of Minnesota - Twin Cities in **2020-Current**, despite having no data prior to 2020, produced similar numbers to the prior Institution. These two should be merged for the purposes of this analysis, as if the Physics department is continuous through these years across both Institutions. Similar behavior occurs in a handful of other institutions.
+- The University of Minnesota (MN) - Minneapolis offered a PhD through **2015-2019** (the past extent of the dataset), but
+  is no longer part of the reported data set. However, the University of Minnesota - Twin Cities in **2020-Current**,
+  despite having no data prior to 2020, produced similar numbers to the prior Institution. These two should be merged for
+  the purposes of this analysis, as if the Physics department is continuous through these years across both Institutions.
+  Similar behavior occurs in a handful of other institutions.
 
 ### Applied Physics Departments
 
-```{r}
+```{r message=FALSE, warning=FALSE, paged.print=TRUE}
   print('TODO:> .')
 ```
 
--   Applied Physics PhDs are granted by a separate department housed in another College, of Engineering or similar, complementary to an Institution's existing Physics department. Only `6` Institutions of this type (for our analysis) exist: specifically `Stanford`, `Yale`, `Univ. Of Michigan - Ann Arbor`, `Columbia`, `Cornell`, and `Rice` Universities.
+- Applied Physics PhDs are granted by a separate department housed in another College, of Engineering or similar,
+  complementary to an Institution's existing Physics department. Only `6` Institutions of this type (for our analysis)
+  exist: specifically `Stanford`, `Yale`, `Univ. Of Michigan - Ann Arbor`, `Columbia`, `Cornell`, and `Rice` 
+  Universities.
 
 ### Top 10 States by accumulative `Physics PhDs`
 
-```{r}
+```{r message=FALSE, warning=FALSE, paged.print=TRUE}
 print('TODO:> .')
 ```
 
--   The Top 10 ranking of cumulative production since 2015 of Physics PhDs is, in descending order: `CA` (1926), `NY` (1154), `MA` (1105), `TX` (907), `IL` (700), `FL` (700), `PA` (623), `OH` (599), `MI` (530), and `CO` (419). We should ensure we perform a population-corrected analysis of the per-capita rate of completing a PhD in these states. Interestingly, this ranking is disjoint from the same ordering for the production of Physics Bachelors. Yet another ranking is produced when ordered by descending quantity of the three degree levels (`BS`, `MS`, and `PhD`).
+- The Top 10 ranking of cumulative production since 2015 of Physics PhDs is, in descending order: `CA` (1926), `NY`
+  (1154), `MA` (1105), `TX` (907), `IL` (700), `FL` (700), `PA` (623), `OH` (599), `MI` (530), and `CO` (419). We should
+  ensure we perform a population-corrected analysis of the per-capita rate of completing a PhD in these states.
+  Interestingly, this ranking is disjoint from the same ordering for the production of Physics Bachelors. Yet another
+  ranking is produced when ordered by descending quantity of the three degree levels (`BS`, `MS`, and `PhD`).
 
 ### Top 20 Institutions by accumulative `Physics_PhDs`
 
-```{r}
+```{r message=FALSE, warning=FALSE, paged.print=TRUE}
 # TODO :> TOP 20 ranking
 ```
 
--   The Top 20 ranking Institutions of cumulative production over the past decade ordered by `PhD`, alongside accumulative `BS` degrees conferred are:
+-   The Top 20 ranking Institutions of cumulative production over the past decade ordered by `PhD`, alongside 
+    accumulative `BS` degrees conferred are:
 
 | **`Institution`**           | **`Physics PhDs`** | `Physics Bachelors` |
 |-----------------------------|:------------------:|:-------------------:|
@@ -342,9 +375,11 @@ print('TODO:> .')
 
     -   what the f is going on with the higher number of exiting physics masters (like U Washington)?
 
--   `TODO :>` Filter by latest year reported + frequency graph/histogram by year, earliest year reported, all NA (e.g., dead departments, no reports, new depts).
+-   `TODO :>` Filter by latest year reported + frequency graph/histogram by year, earliest year reported, all NA (e.g., 
+    dead departments, no reports, new depts).
 
--   `TODO :>` What is the boundary/difference in Phys bachelors production and undergrad enrollment figures between programs that offer BS/MS as highest vs PhD as highest?
+-   `TODO :>` What is the boundary/difference in Phys bachelors production and undergrad enrollment figures between 
+    programs that offer BS/MS as highest vs PhD as highest?
 
 ## Targeted Adjustments
 
@@ -353,6 +388,8 @@ print('TODO:> .')
 ## Additional Data
 
 -   Faculty count?
+
+-   Institution-level COMMON dataset
 
 -   Voronoi-Cell approximation of nearest PhD or BS
 
