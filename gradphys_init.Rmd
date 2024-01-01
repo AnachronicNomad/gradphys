@@ -51,8 +51,19 @@ a `Masters` or `PhD` degree certificate was conferred during those years, then t
 appropriate level must have existed. The `Notes` annotations field was removed from this analysis, as the field appeared
 consistent across years, and after 2019 split into a separate datasheet of the same annual report- the `Notes` values
 and changelog are available at the source data. `Institution`-level data were adjusted for varying
-spellings/canonization over time (e.g. `Appl Phy` -\> `Appl Phys`), and (`TODO :>`) `Coll -> U` if the institution
-re-designated in a later year.
+spellings/canonization over time (e.g. `Appl Phy` -\> `Appl Phys`, `Coll of -`, etc.).  Where possible, an
+`Institution`s name as of 2022 is used. 
+
+and (`TODO :>`) `Coll -> U` if the institution re-designated in a later year.
+
+#### TODO :>
+Known issues: 
+- Multiple institutions failed to report in 2016/2020. 
+- Mary Baldwin Coll -> U in 2017
+- Piedmont Coll -> U in 2022
+- William & Mary, namin Coll of -
+- Purdue U-West Lafayette should be marked as Combined astro program
+- SUNY Brockport
 
 The process used to incorporate this data is encoded in a function, `process_data(...)`, demonstrated in the following R
 script:
@@ -65,6 +76,8 @@ script:
 Columns have summary metrics generated for groupings of observations, given an `Institution` over a set of `Year`s.
 These have been marked as **Accumulative** or **Averaged**. Data at the individual observation level (foreach
 `Institution`, foreach `Year`) ***have not yet been altered*** from their original values.
+
+- TODO :> make all-NA years orange/red bckgrnd
 
 ```{r message=F, warning=F, message=F, paged.print=TRUE}
 library(tidyverse)
@@ -221,6 +234,25 @@ rxtbl <- tdata |>
 shiny::fluidRow(
   shiny::column(
     2,
+    htmltools::browsable(
+      tagList(
+        tags$div(
+          class = 'd-grid gap-2 mx-auto',
+          # CSV download button
+          tags$button(
+            tagList(fontawesome::fa("download"), "\tCSV Data"),
+            class = 'btn btn-success',
+            onclick = "Reactable.downloadDataCSV('rosterphys14_22-tbl', 'rosterphys14_22.csv')"
+          ),
+          # Expand/Collapse button
+          tags$button(
+            "Expand/Collapse",
+            class = 'btn btn-info',
+            onclick = "Reactable.toggleAllRowsExpanded('rosterphys14_22-tbl')",
+          ),
+        )
+      )
+    ),
     # filter-by degree
     filter_checkbox("degree", "Degree Level", tdata, ~Highest_Physics_Degree_Offered),
     # TODO :> allow column selection in this menu
@@ -237,32 +269,20 @@ shiny::fluidRow(
               tags$option("Program", value = "Highest_Physics_Degree_Offered"),
               tags$option("State", value = "State"),
             ),
-            tags$hr("aria-hidden" = "true")
         )
     ),
   ),
   shiny::column(
     10,
     shiny::fluidRow(
-      # CSV download button
       htmltools::browsable(
         tagList(
-          tags$button(
-            tagList(fontawesome::fa("download"), "\tCSV Data"),
-            onclick = "Reactable.downloadDataCSV('rosterphys14_22-tbl', 'rosterphys14_22.csv')"
-          ),
-        )
-      ),
-      # Expand/Collapse button
-      htmltools::browsable(
-        tagList(
-          tags$button(
-            "Expand/Collapse",
-            onclick = "Reactable.toggleAllRowsExpanded('rosterphys14_22')"
-          ),
+          tags$div(
+          )
         )
       ),
     ),
+    # DataTable
     rxtbl
   )
 )
@@ -393,8 +413,7 @@ print('TODO:> .')
 
 -   Voronoi-Cell approximation of nearest PhD or BS
 
--   Department Specialties?
-    \<- n-gram analysis
+-   Department Specialties? <- n-gram analysis
 
 -   Undergraduate population total enrollments?
 
@@ -404,21 +423,25 @@ print('TODO:> .')
 
 -   Percentile of Median Salary of county relative to State
 
--   Relative to Country?
+-   Percentile median salary of county Relative to Country?
+
+-   Gini Index.
 
 -   Median Rent of surrounding
 
 -   \% vote in last election?
 
--   Political Party of governor?
+-   Political Party of State governor?
 
 -   Online Program availability?
 
--   Has nearby or attached National Lab
+-   Has nearby or attached National Lab (`as.factor(...)` with Y/N levels; sep col of assoc. lab)
 
 -   Link to faculty/dept page
 
 -   FAFSA ID
+
+-   R1 research designation
 
 ------------------------------------------------------------------------
 

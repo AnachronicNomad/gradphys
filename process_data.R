@@ -106,11 +106,11 @@ process_data <- \(DATA_DIR) {
     ##  transform `Highest Physics Degree Offered`, added in 2017
     #####
     mutate(
-      Highest_Physics_Degree_Offered = ifelse(
+      Highest_Physics_Degree_Offered = if_else(
         is.na(Highest_Physics_Degree_Offered),
-        ifelse(
+        if_else(
           is.na(Physics_PhDs),
-          ifelse(
+          if_else(
             is.na(Fall_Total_Graduate_Student_Enrollments),
             'BS',
             'MS'
@@ -157,7 +157,7 @@ process_data <- \(DATA_DIR) {
     ##  transform Institution name `College` -> `Coll`, drop apostrophe
     #####
     mutate(
-      Institution = gsub("(College(s){0,1})", "Coll", Institution)
+      Institution = gsub("(College(s){0,1})(\\s*(of))*$", "Coll \\2", Institution)
     ) |>
     mutate(
       Institution = gsub("'", '', Institution)
