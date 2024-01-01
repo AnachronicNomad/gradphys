@@ -6,7 +6,8 @@ output:
     keep_md: true
     code_folding: hide
     highlight: zenburn
-    theme: spacelab
+    theme:
+      bslib: TRUE
     number_sections: true
 date: "2023-12-21"
 ---
@@ -15,6 +16,7 @@ date: "2023-12-21"
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 library(tidyverse)
 library(fontawesome)
+library(bslib)
 ```
 
 # Background [WIP]
@@ -241,7 +243,7 @@ shiny::fluidRow(
           # CSV download button
           tags$button(
             tagList(fontawesome::fa("download"), "\tCSV Data"),
-            class = 'btn btn-success',
+            class = 'btn btn-outline-success',
             onclick = "Reactable.downloadDataCSV('rosterphys14_22-tbl', 'rosterphys14_22.csv')"
           ),
           # Expand/Collapse button
