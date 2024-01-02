@@ -129,7 +129,6 @@ process_data <- \(DATA_DIR) {
     #####
     mutate(
       Astro_Program = case_when(
-          is.na(Astro_Program) ~ 'no dept.',
           Astro_Program == 'c' ~ 'combined',
           Astro_Program == 's' ~ 'separate'
         )
