@@ -21,7 +21,7 @@ library(bslib)
 
 # Background [WIP]
 
-::: {#WIP .alert .alert-warning}
+:::: {#WIP .alert .alert-warning}
 ::: {.h3 .alert-heading .alert-warning}
 `r fontawesome::fa('triangle-exclamation')` **Work in Progress**
 :::
@@ -29,7 +29,7 @@ library(bslib)
 ------------------------------------------------------------------------
 
 **This article is currently a work in progress. Feel free to observe while it gets filled out!**
-:::
+::::
 
 # Data
 
@@ -43,29 +43,48 @@ listed year); in addition to an aggregate of all degree recipients, awarded or e
 Dec) of the listed year.
 
 For example, in the 2015 report, data regarding enrollments are the finalized numbers of the 2014-2015 academic year;
-plus all conferred Bachelors, MS, and PhD certificates from January through December (inclusive) of the 2015 calendar
-year.
+plus all conferred Bachelors (`BS`), `MS`, and `PhD` certificates from January through December (inclusive) of the 2015
+calendar year.
 
 Datasheets were edited at an intermediary step to unify and homogenize data condensation into a
 [`tidy`](https://tidyr.tidyverse.org/) data set. Prior to **2017**, the `Highest Physics Degree Offered` field and some
 associated enrollment data was not available in the survey. In our analysis, data were infilled on the condition that if
-a `Masters` or `PhD` degree certificate was conferred during those years, then the corresponding program at the
-appropriate level must have existed. The `Notes` annotations field was removed from this analysis, as the field appeared
-consistent across years, and after 2019 split into a separate datasheet of the same annual report- the `Notes` values
-and changelog are available at the source data. `Institution`-level data were adjusted for varying
-spellings/canonization over time (e.g. `Appl Phy` -\> `Appl Phys`, `Coll of -`, etc.).  Where possible, an
-`Institution`s name as of 2022 is used. 
+a `MS` or `PhD` degree certificate was conferred during those years, then the corresponding program at the
+appropriate level must have existed; and if a higher level was available in 2017, then it must have been available in
+2015 or 2016. The `Notes` annotations field was removed from this analysis, as the field appeared consistent across
+years, and after 2019 split into a separate datasheet of the same annual report- the `Notes` values and changelog are
+available at the source data. 
 
-and (`TODO :>`) `Coll -> U` if the institution re-designated in a later year.
+`Institution`-level data were adjusted for varying spellings and canonizations over time (e.g. `Appl Phy` -\> `Appl
+Phys`, `Coll of -`, etc.).  For the purposes of this analysis, `Institutions` that changed from a College, University,
+or system designation are simply renamed to their name as of 2022, with information lost regarding that the change
+occurred.  For a complete listing of the modifications made to `Institution` names, consult `Lines 169-???` in the
+following code listing.
+
 
 #### TODO :>
 Known issues: 
 - Multiple institutions failed to report in 2016/2020. 
-- Mary Baldwin Coll -> U in 2017
-- Piedmont Coll -> U in 2022
-- William & Mary, namin Coll of -
-- Purdue U-West Lafayette should be marked as Combined astro program
-- SUNY Brockport
+
+- TN-U of, Space Inst
+
+- merge Georgia Southern U matching years
+
+- Southern Oregon U (??)
+
+- Augustana Coll (SD) -> Augustana U
+
+- Xavier U (LA) -> Xavier U of Louisiana
+
+- Union Coll (NY), Union Coll (NE)
+
+- Westminster Coll - (PA), (UT), (MO)
+
+- St. Thomas-U of (MN), (TX)
+
+- Wheaton Coll (IL), (MA)
+
+- Embry-Riddle Aeronautical U (FL), (AZ)
 
 The process used to incorporate this data is encoded in a function, `process_data(...)`, demonstrated in the following R
 script:
@@ -80,6 +99,8 @@ These have been marked as **Accumulative** or **Averaged**. Data at the individu
 `Institution`, foreach `Year`) ***have not yet been altered*** from their original values.
 
 - TODO :> make all-NA years orange/red bckgrnd
+
+----
 
 ```{r message=F, warning=F, message=F, paged.print=TRUE}
 library(tidyverse)
@@ -110,7 +131,7 @@ rxtbl <- tdata |>
         ####
         elementId = 'rosterphys14_22-tbl',
         filterable = T,
-        #searchable = T,
+        searchable = T,
         groupBy = c('Institution'),
         bordered = T,
         striped = T,
@@ -163,6 +184,7 @@ rxtbl <- tdata |>
           `State` = colDef(
             name = 'State',
             align = 'center',
+            aggregate = 'unique',
             ),
           `Highest_Physics_Degree_Offered` = colDef(
             name = "Highest Physics Degree Offered",
@@ -233,62 +255,60 @@ rxtbl <- tdata |>
 #####
 ##  Display Shiny with Crosstalk/htmltools widgets
 #####
-shiny::fluidRow(
-  shiny::column(
-    2,
-    htmltools::browsable(
-      tagList(
-        tags$div(
-          class = 'd-grid gap-2 mx-auto',
-          # CSV download button
-          tags$button(
-            tagList(fontawesome::fa("download"), "\tCSV Data"),
-            class = 'btn btn-outline-success',
-            onclick = "Reactable.downloadDataCSV('rosterphys14_22-tbl', 'rosterphys14_22.csv')"
-          ),
-          # Expand/Collapse button
-          tags$button(
-            "Expand/Collapse",
-            class = 'btn btn-info',
-            onclick = "Reactable.toggleAllRowsExpanded('rosterphys14_22-tbl')",
-          ),
-        )
-      )
-    ),
-    # filter-by degree
-    filter_checkbox("degree", "Degree Level", tdata, ~Highest_Physics_Degree_Offered),
-    # TODO :> allow column selection in this menu
-    # Group Selection
-    htmltools::browsable(
-        tagList(
-            # Group-by selection
-            div(tags$label("Group by", `for` = "rosterphys14_22-select")),
-            tags$select(
-              id = "rosterphys14_22-select",
-              onchange = "Reactable.setGroupBy('rosterphys14_22-tbl', this.value ? [this.value] : [])",
-              tags$option("None", value = ""),
-              tags$option("Institution", value = "Institution"),
-              tags$option("Program", value = "Highest_Physics_Degree_Offered"),
-              tags$option("State", value = "State"),
-            ),
-        )
-    ),
-  ),
-  shiny::column(
-    10,
-    shiny::fluidRow(
+shiny::fluidPage(
+  shiny::fluidRow(
+    shiny::column(
+      2,
       htmltools::browsable(
         tagList(
           tags$div(
+            class = 'd-grid gap-2 mx-auto',
+            # CSV download button
+            tags$button(
+              tagList(fontawesome::fa("download"), "\tCSV Data"),
+              class = 'btn btn-outline-success',
+              onclick = "Reactable.downloadDataCSV('rosterphys14_22-tbl', 'rosterphys14_22.csv')"
+            ),
+            # Expand/Collapse button
+            tags$button(
+              "Expand/Collapse\nRows",
+              class = 'btn btn-info',
+              onclick = "Reactable.toggleAllRowsExpanded('rosterphys14_22-tbl')",
+            ),
           )
         )
       ),
+      # filter-by degree
+      filter_checkbox("degree", "Degree Level", tdata, ~Highest_Physics_Degree_Offered),
+      # TODO :> allow column visibility selection in this menu
+      # TODO :> allow column stickiness toggle in this menu
+      # Group Selection
+      htmltools::browsable(
+          tagList(
+              # Group-by selection
+              div(tags$label("Group by", `for` = "rosterphys14_22-select")),
+              tags$select(
+                id = "rosterphys14_22-select",
+                onchange = "Reactable.setGroupBy('rosterphys14_22-tbl', this.value ? [this.value] : [])",
+                tags$option("None", value = ""),
+                tags$option("Institution", value = "Institution"),
+                tags$option("Program", value = "Highest_Physics_Degree_Offered"),
+                tags$option("State", value = "State"),
+                tags$option("Year", value = "Year")
+              ),
+          )
+      ),
     ),
-    # DataTable
-    rxtbl
+    shiny::column(
+      10,
+      # DataTable
+      rxtbl
+    )
   )
 )
 ```
+
+----
 
 ## Observations
 
@@ -381,8 +401,8 @@ print('TODO:> .')
 | `CA-U of, San Diego`        |        169         |         405         |
 | `Texas A&M-College Station` |        168         |         265         |
 | `Washington-U of`           |        163         |        1286         |
+| `Minnesota-U of, TwinCities`|        163         |         416         |
 | `Princeton U`               |        161         |         203         |
-| `Florida State U`           |        160         |         165         |
 
 -   `TODO :>` How many departments inconsistently reported data?
 
@@ -399,6 +419,7 @@ print('TODO:> .')
 
 -   `TODO :>` Filter by latest year reported + frequency graph/histogram by year, earliest year reported, all NA (e.g., 
     dead departments, no reports, new depts).
+      * inconsistent reporting, `NA` reporting by `Year`
 
 -   `TODO :>` What is the boundary/difference in Phys bachelors production and undergrad enrollment figures between 
     programs that offer BS/MS as highest vs PhD as highest?
@@ -444,6 +465,10 @@ print('TODO:> .')
 -   FAFSA ID
 
 -   R1 research designation
+
+-   Legal recreational weed
+
+-   pitbull bans
 
 ------------------------------------------------------------------------
 

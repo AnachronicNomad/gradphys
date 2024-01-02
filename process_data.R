@@ -157,10 +157,58 @@ process_data <- \(DATA_DIR) {
     ##  transform Institution name `College` -> `Coll`, drop apostrophe
     #####
     mutate(
-      Institution = gsub("(College(s){0,1})(\\s*(of))*$", "Coll \\2", Institution)
+      Institution = gsub(
+        "((College(s){0,1})(\\s+(of)){0,1}\\s*\\w{0})$", "Coll \\4",
+        Institution,
+        perl = TRUE
+      )
     ) |>
     mutate(
-      Institution = gsub("'", '', Institution)
+      Institution = gsub("'", '', Institution) |> trimws(which = "both")
+    ) |>
+    #####
+    ##  transform Institution names for continuity
+    #####
+    mutate(
+      Institution = Institution |>
+          gsub("(Minnesota-U of, Minnpls)", "Minnesota-U of, Minnpls/TwinCities", x=_) |>
+          gsub("(Minnesota-U of, Twin Cities)", "Minnesota-U of, Minnpls/TwinCities", x=_) |>
+          gsub("(Mary Baldwin Coll)", "Mary Baldwin U", x=_) |>
+          gsub("(Piedmont Coll)", "Piedmont U", x=_) |>
+          gsub("(William & Mary-Coll of)", "William & Mary", x=_) |>
+          gsub("(SUNY Coll at Brockport)", "SUNY Brockport", x=_) |>
+          gsub("(Notre Dame of MD-Coll of)", "Notre Dame of MD U", x=_) |>
+          gsub("(Fresno State U)", "Cal St U-Fresno", x=_) |>
+          gsub("(Muskingum Coll)", "Muskingum U", x=_) |>
+          gsub("(Central Methodist Coll)", "Central Methodist U", x=_) |>
+          gsub("(Indiana U Purdue U-Ft Wayne)", "Purdue U-Ft Wayne", x=_) |>
+          gsub("(Purdue U-Calumet)", "Purdue U-Northwest", x=_) |>
+          gsub("(Armstrong Atlantic St U)", "Armstrong State U", x=_) |>
+          gsub("(Armstrong State U)", "Georgia Southern U", x=_) |>
+          gsub("(Lynchburg Coll)", "Lynchburg-U of", x=_) |>
+          gsub("(St. John Fisher Coll)", "St. John Fisher U", x=_) |>
+          gsub("(Greenville Coll)", "Greenville U", x=_) |>
+          gsub("(Bloomsburg U of PA)", "Commonwealth U of PA", x=_) |>
+          gsub("(Roberts Wesleyan Coll)", "Roberts Wesleyan U", x=_) |>
+          gsub("(Doane Coll)", "Doane U", x=_) |>
+          gsub("(Simmons Coll)", "Simmons U", x=_) |>
+          gsub("(Thomas More Coll)", "Thomas More U", x=_) |>
+          gsub("(Linfield Coll)", "Linfield U", x=_) |>
+          gsub("(Dordt Coll)", "Dordt U", x=_) |>
+          gsub("(Otterbein Coll)", "Otterbein U", x=_) |>
+          gsub("(Messiah Coll)", "Messiah U", x=_) |>
+          gsub("(Sacramento State U)", "Cal St U-Sacramento", x=_) |>
+          gsub("(Pennsylvania St U-Erie)", "Pennsylvania St Behrend", x=_) |>
+          gsub("(New York U, Polytechnic Sch. of Eng.)", "New York U, Tandon Sch. of Engrg.", x=_) |>
+          gsub("(Calvin Coll)", "Calvin U", x=_) |>
+          gsub("(Augusta State U)", "Augusta U", x=_) |>
+          gsub("(Elmhurst Coll)", "Elmhurst U", x=_) |>
+          gsub("(Moravian Coll)", "Moravian U", x=_) |>
+          gsub("(Augsburg Coll)", "Augsburg U", x=_) |>
+          gsub("(Centre Coll of KY)", "Centre Coll", x=_) |>
+          gsub("(Humboldt State U)", "Cal St Poly U-Humboldt", x=_) |>
+          gsub("(Texas State U-San Marcos)", "Texas State U", x=_) |>
+          gsub("(Richard Stockton Coll of NJ)", "Stockton U", x=_)
     ) |>
 
     #####
