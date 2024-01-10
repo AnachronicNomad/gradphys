@@ -349,7 +349,8 @@ print('TODO:> .')
 - Applied Physics PhDs are granted by a separate department housed in another College, of Engineering or similar,
   complementary to an Institution's existing Physics department. Only `6` Institutions of this type (for our analysis)
   exist: specifically `Stanford`, `Yale`, `Univ. Of Michigan - Ann Arbor`, `Columbia`, `Cornell`, and `Rice` 
-  Universities.
+  Universities. `New York U` also has this split between its College of Liberal Arts and Sciences and an Engineering 
+  College, but the distinction only appears at the `BS/MS` level. 
 
 ### Top 10 States by accumulative `Physics PhDs`
 
@@ -485,9 +486,16 @@ print('TODO:> .')
 
 -   `TODO :>` Hertzsprung-Russell Diagram here [https://observablehq.com/\@d3/hertzsprung-russell-diagram?intent=fork](https://observablehq.com/@d3/hertzsprung-russell-diagram?intent=fork){.uri}
 
-- Resiliency; `BS`: 
+- PhD resiliency has an open definition, should include the number of produced `MS` students as well
+
+- Resiliency is a conversion score, but should compare number of produced combined `BS/MS` students to sum of prev year's
+  Senior and Junior declared major enrollments
+
+- Conversion Score 1; `BS`: 
   $$ raw\_score = \Big(1 - \frac{N\_Juniors_{t-1}}{N\_Seniors_t} \Big) + \epsilon_t$$
   * Then, compute z-score and student's T-dist of raw_score to identify deviation from trend line
+  
+- Conversion Score 2 should compare number of produced `BS` to prev years Senior enrollments
 
 ### Per-Capita PhDs Conferred vs. Undergrad Physics Enrollment Population
 
