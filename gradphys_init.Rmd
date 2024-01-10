@@ -472,6 +472,8 @@ print('TODO:> .')
 
 -   pitbull bans
 
+-   proportion of population that are women under 40 with at least a bachelors degree
+
 ------------------------------------------------------------------------
 
 # Methods

@@ -209,6 +209,24 @@ process_data <- \(DATA_DIR) {
           gsub("(Texas State U-San Marcos)", "Texas State U", x=_) |>
           gsub("(Richard Stockton Coll of NJ)", "Stockton U", x=_)
     ) |>
+    mutate(
+      Institution = case_when(
+        Institution == "Augustana Coll" & State == "SD" ~ "Augustana U",
+        Institution == "Xavier U" & State == "LA" ~ "Xavier U of Louisiana",
+        Institution == "Union Coll" & State == "NY" ~ "Union Coll (NY)",
+        Institution == "Union Coll" & State == "NE" ~ "Union Coll (NE)",
+        Institution == "Westminster Coll" & State == "PA" ~ "Westminster Coll (PA)",
+        Institution == "Westminster Coll" & State == "UT" ~ "Westminster Coll (UT)",
+        Institution == "Westminster Coll" & State == "MO" ~ "Westminster Coll (MO)",
+        Institution == "St. Thomas-U of" & State == "MN" ~ "St. Thomas-U of (MN)",
+        Institution == "St. Thomas-U of" & State == "TX" ~ "St. Thomas-U of (TX)",
+        Institution == "Wheaton Coll" & State == "IL" ~ "Wheaton Coll (IL)",
+        Institution == "Wheaton Coll" & State == "MA" ~ "Wheaton Coll (MA)",
+        Institution == "Embry-Riddle Aeronautical U" & State == "FL" ~ "Embry-Riddle Aeronautical U (FL)",
+        Institution == "Embry-Riddle Aeronautical U" & State == "AZ" ~ "Embry-Riddle Aeronautical U (AZ)",
+        .default = Institution
+      )
+    ) |>
 
     #####
     ## set column order
