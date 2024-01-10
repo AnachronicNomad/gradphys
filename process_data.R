@@ -227,6 +227,8 @@ process_data <- \(DATA_DIR) {
         .default = Institution
       )
     ) |>
+    ## remove `TN-U of, Space Inst`, dupl by `TN-U of, Knoxville`, the host Inst.
+    filter(!(Institution == "TN-U of, Space Inst")) |>
 
     #####
     ## set column order

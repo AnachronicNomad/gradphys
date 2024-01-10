@@ -63,28 +63,8 @@ following code listing.
 
 
 #### TODO :>
-Known issues: 
-- Multiple institutions failed to report in 2016/2020. 
-
-- TN-U of, Space Inst
 
 - merge Georgia Southern U matching years
-
-- Southern Oregon U (??)
-
-- Augustana Coll (SD) -> Augustana U
-
-- Xavier U (LA) -> Xavier U of Louisiana
-
-- Union Coll (NY), Union Coll (NE)
-
-- Westminster Coll - (PA), (UT), (MO)
-
-- St. Thomas-U of (MN), (TX)
-
-- Wheaton Coll (IL), (MA)
-
-- Embry-Riddle Aeronautical U (FL), (AZ)
 
 The process used to incorporate this data is encoded in a function, `process_data(...)`, demonstrated in the following R
 script:
@@ -97,8 +77,6 @@ script:
 Columns have summary metrics generated for groupings of observations, given an `Institution` over a set of `Year`s.
 These have been marked as **Accumulative** or **Averaged**. Data at the individual observation level (foreach
 `Institution`, foreach `Year`) ***have not yet been altered*** from their original values.
-
-- TODO :> make all-NA years orange/red bckgrnd
 
 ----
 
@@ -310,7 +288,7 @@ shiny::fluidPage(
 
 ----
 
-## Observations
+## Observations and Insights
 
 Multiple notes arise from a brief overview of this collection:
 
