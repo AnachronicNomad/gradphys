@@ -58,25 +58,20 @@ available at the source data.
 `Institution`-level data were adjusted for varying spellings and canonizations over time (e.g. `Appl Phy` -\> `Appl
 Phys`, `Coll of -`, etc.).  For the purposes of this analysis, `Institutions` that changed from a College, University,
 or system designation are simply renamed to their name as of 2022, with information lost regarding that the change
-occurred.  For a complete listing of the modifications made to `Institution` names, consult `Lines 169-???` in the
-following code listing.
-
-
-#### TODO :>
-
-- merge Georgia Southern U matching years
-
-The process used to incorporate this data is encoded in a function, `process_data(...)`, demonstrated in the following R
-script:
+occurred.  For a complete listing of the modifications made to `Institution` names, consult **Lines** `169-231` and
+`269-317` in the process used to incorporate this data. The data pipeline is encoded in a function, `process_data(...)`,
+demonstrated in the following R script:
 
 ```{r, file=c('process_data.R')}
 ```
+
 
 ## Table
 
 Columns have summary metrics generated for groupings of observations, given an `Institution` over a set of `Year`s.
 These have been marked as **Accumulative** or **Averaged**. Data at the individual observation level (foreach
-`Institution`, foreach `Year`) ***have not yet been altered*** from their original values.
+`Institution`, foreach `Year`) ***have not yet been altered*** from their original values - with the exception of 
+`Georgia Southern U`, which combined with another institution in **2018**. 
 
 ----
 
