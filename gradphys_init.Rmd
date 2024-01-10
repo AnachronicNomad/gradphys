@@ -45,6 +45,8 @@ For example, in the 2015 report, data regarding enrollments are the finalized nu
 plus all conferred Bachelors (`BS`), `MS`, and `PhD` certificates from January through December (inclusive) of the 2015
 calendar year.
 
+### Data Pipeline Processing
+
 Datasheets were edited at an intermediary step to unify and homogenize data condensation into a
 [`tidy`](https://tidyr.tidyverse.org/) data set. Prior to **2017**, the `Highest Physics Degree Offered` field and some
 associated enrollment data was not available in the survey. In our analysis, data were infilled on the condition that if
@@ -63,7 +65,6 @@ demonstrated in the following R script:
 
 ```{r, file=c('process_data.R')}
 ```
-
 
 ## Table
 
@@ -314,6 +315,7 @@ phds_2022 <-
   distinct() |>
   group_by(State)
 
+# TODO :> Use reactable alongside density heatmap at State/Region level
 phds_2022
 ```
 
@@ -401,26 +403,23 @@ print('TODO:> .')
 
 -   `TODO :>` COVID-19 impacts?
 
--   `TODO :>` Frequency Distribution of PhDs
+-   `TODO :>` Frequency Distribution of accumulative PhDs
 
 -   `TODO :>` Top 10 by accumulative Physics Bachelors? Frequency Distribution?
 
-    -   what the f is going on with the higher number of exiting physics masters (like U Washington)?
+        *   what the f is going on with the higher number of exiting physics masters (like U Washington)?
 
 -   `TODO :>` Filter by latest year reported + frequency graph/histogram by year, earliest year reported, all NA (e.g., 
     dead departments, no reports, new depts).
-      * inconsistent reporting, `NA` reporting by `Year`
+    
+        *   inconsistent reporting, `NA` reporting by `Year`
 
 -   `TODO :>` What is the boundary/difference in Phys bachelors production and undergrad enrollment figures between 
     programs that offer BS/MS as highest vs PhD as highest?
     
 -   `TODO :>` Use shapefiles to demonstrate gradient of universities and availability of programs
 
-    -   Maybe leave this summary graphic until County-level data is established.
-
-## Targeted Adjustments
-
--   flow across all years to fix misspells & names
+    *   Maybe leave this summary graphic until County-level data is established.
 
 ## Additional Data
 
@@ -468,9 +467,13 @@ print('TODO:> .')
 
 -   per-capita incidence rate of population that are women between 23-40 with at least a bachelors degree
 
+-   per-capita incidence rate of population that are men between 20-50 with at least a bachelors degree
+
+-   estimate ratio of female/male annual median income
+
 ------------------------------------------------------------------------
 
-# Methods
+# Methods and Analysis
 
 ## Problem-Domain Adjusted and Summary Metrics
 
@@ -482,6 +485,10 @@ print('TODO:> .')
 
 -   `TODO :>` Hertzsprung-Russell Diagram here [https://observablehq.com/\@d3/hertzsprung-russell-diagram?intent=fork](https://observablehq.com/@d3/hertzsprung-russell-diagram?intent=fork){.uri}
 
+- Resiliency; `BS`: 
+  $$ raw\_score = \Big(1 - \frac{N\_Juniors_{t-1}}{N\_Seniors_t} \Big) + \epsilon_t$$
+  * Then, compute z-score and student's T-dist of raw_score to identify deviation from trend line
+
 ### Per-Capita PhDs Conferred vs. Undergrad Physics Enrollment Population
 
 ### Altered Data
@@ -490,13 +497,13 @@ print('TODO:> .')
 
 ## Bollinger-Bands Volatility Metric
 
+Roughly defined econometric using distance between moving-average upper and lower bounds at sampled time $t$.
+
 ## Time-Series Regression
 
 ## `XGBoost` Random Forest
 
-------------------------------------------------------------------------
-
-# Analysis
+## Outlier Analysis vs Trend-Line
 
 ------------------------------------------------------------------------
 
@@ -504,7 +511,7 @@ print('TODO:> .')
 
 ------------------------------------------------------------------------
 
-# Future Work
+# Discussion
 
 ------------------------------------------------------------------------
 
