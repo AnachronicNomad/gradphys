@@ -14,7 +14,6 @@ date: "2023-12-21"
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
-library(tidyverse)
 library(fontawesome)
 library(bslib)
 ```
@@ -293,22 +292,36 @@ Multiple notes arise from a brief overview of this collection:
 print('TODO:> .')
 ```
 
-- A natural boundary to delineate the `r length(unique(rosterdata$Institution))` unique `Institutions` in this set is in
-  the categorical division of `Highest Physics Degree Offered` (`BS`, `MS`, and `PhD`) in the most recent year of the
-  roster publication. We will return to this Bayesian decision boundary of the search space later. Furthermore, we will
-  consider `PhD`-granting `Institution`s as separate from the combined group of `BS/MS`-granting `Institution`s
+- A natural boundary to delineate the **`r length(unique(rosterdata$Institution))`** unique `Institutions` in this set
+  is in the categorical division of `Highest Physics Degree Offered` (`BS`, `MS`, and `PhD`) in the most recent year of
+  the roster publication. We will return to this Bayesian decision boundary of the search space later. Furthermore, we
+  will consider `PhD`-granting `Institutions` as separate from the combined group of `BS/MS`-granting `Institutions`.
 
 ### PhD Availability by Region
 
 ```{r message=FALSE, warning=FALSE, paged.print=TRUE}
-print('TODO:> .')
+## `Institutions offering a PhD program as of 2022
+phds_2022 <- 
+  rosterdata |>
+  filter(
+    (
+      Highest_Physics_Degree_Offered == 'PhD' &
+      Year == 2022
+    )
+  ) |>
+  ungroup() |>
+  select(Institution, State) |>
+  distinct() |>
+  group_by(State)
+
+phds_2022
 ```
 
-- There is at least one Institution in every state and territory, except the US Virgin Islands, that has a Physics PhD
-  program. There are `TODO` unique `Institutions` offering a `PhD` as of `2022`.
+- There is at least one `Institution` in every state and territory, except the US Virgin Islands, that has a Physics PhD
+  program. 
   
-- `TODO :>` Use shapefiles to demonstrate gradient of universities and availability of programs
-  - Maybe leave this summary graphic until County-level data is established.
+- There are **`r length(unique(phds_2022$Institution))`** unique `Institutions` offering a `PhD` as of `2022`.
+  
 
 ### Temporal Changes of Observations
 
@@ -316,11 +329,14 @@ print('TODO:> .')
 print('TODO:> .')
 ```
 
-- The University of Minnesota (MN) - Minneapolis offered a PhD through **2015-2019** (the past extent of the dataset), but
+- The University of Minnesota (MN) - Minneapolis offered a `PhD` through **2015-2019** (the past extent of the dataset), but
   is no longer part of the reported data set. However, the University of Minnesota - Twin Cities in **2020-Current**,
   despite having no data prior to 2020, produced similar numbers to the prior Institution. These two should be merged for
   the purposes of this analysis, as if the Physics department is continuous through these years across both Institutions.
   Similar behavior occurs in a handful of other institutions.
+  
+- `TODO :>` Multiple universities also changed their program designation, with some recently adding or dropping their
+  `PhD` programs, or morphing their `MS` programs into a `PhD`. 
 
 ### Applied Physics Departments
 
@@ -387,8 +403,7 @@ print('TODO:> .')
 
 -   `TODO :>` Frequency Distribution of PhDs
 
--   `TODO :>` Top 10 by accumulative Physics Bachelors?
-    Frequency Distribution?
+-   `TODO :>` Top 10 by accumulative Physics Bachelors? Frequency Distribution?
 
     -   what the f is going on with the higher number of exiting physics masters (like U Washington)?
 
@@ -398,6 +413,10 @@ print('TODO:> .')
 
 -   `TODO :>` What is the boundary/difference in Phys bachelors production and undergrad enrollment figures between 
     programs that offer BS/MS as highest vs PhD as highest?
+    
+-   `TODO :>` Use shapefiles to demonstrate gradient of universities and availability of programs
+
+    -   Maybe leave this summary graphic until County-level data is established.
 
 ## Targeted Adjustments
 
@@ -425,6 +444,8 @@ print('TODO:> .')
 
 -   Gini Index.
 
+-   Measure of Racial Segregation, Ethnic Diversity metrics?
+
 -   Median Rent of surrounding
 
 -   \% vote in last election?
@@ -437,15 +458,15 @@ print('TODO:> .')
 
 -   Link to faculty/dept page
 
--   FAFSA ID
+-   FAFSA ID/Federal School Code
 
 -   R1 research designation
 
 -   Legal recreational weed
 
--   pitbull bans
+-   no pitbull bans
 
--   proportion of population that are women under 40 with at least a bachelors degree
+-   per-capita incidence rate of population that are women between 23-40 with at least a bachelors degree
 
 ------------------------------------------------------------------------
 
@@ -467,13 +488,11 @@ print('TODO:> .')
 
 ------------------------------------------------------------------------
 
+## Bollinger-Bands Volatility Metric
+
 ## Time-Series Regression
 
 ## `XGBoost` Random Forest
-
-------------------------------------------------------------------------
-
-## Bollinger-Bands Volatility Metric
 
 ------------------------------------------------------------------------
 
