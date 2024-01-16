@@ -492,7 +492,7 @@ print('TODO:> .')
   Senior and Junior declared major enrollments
 
 - Conversion Score 1; `BS`: 
-  $$ raw\_score = \Big(1 - \frac{N\_Juniors_{t-1}}{N\_Seniors_t} \Big) + \epsilon_t$$
+  $$ raw\_score = \Big(1 - \frac{N\_Juniors_{t-1}}{N\_Seniors_t} \Big) + \epsilon_t $$
   * Then, compute z-score and student's T-dist of raw_score to identify deviation from trend line
   
 - Conversion Score 2 should compare number of produced `BS` to prev years Senior enrollments
