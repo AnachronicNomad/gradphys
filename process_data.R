@@ -63,7 +63,7 @@ process_data <- \(DATA_DIR) {
           paste0(
             '20',
             gsub(
-                paste0(DATA_DIR, "*physrostr([0-9]{2}).xlsx$"),
+                paste0(DATA_DIR, "*physrostr{0,1}([0-9]{2}).xlsx$"),
                 "\\1",
                 .file))),
         .before = Institution
