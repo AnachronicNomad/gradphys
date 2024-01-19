@@ -143,7 +143,7 @@ rxtbl <- tdata |>
           `Year` = colDef(
             name = 'Year',
             align = "center",
-            minWidth = 60,
+            minWidth = 64,
             sticky = "left",
             sortable = T,
             defaultSortOrder = "asc"
@@ -331,8 +331,8 @@ phds_2022
 print('TODO:> .')
 ```
 
-- The University of Minnesota (MN) - Minneapolis offered a `PhD` through **2015-2019** (the past extent of the dataset), but
-  is no longer part of the reported data set. However, the University of Minnesota - Twin Cities in **2020-Current**,
+- The University of Minnesota (MN) - Minneapolis offered a `PhD` through **2015-2019** (the past extent of the dataset),
+  but is no longer part of the reported data set. However, the University of Minnesota - Twin Cities in **2020-Current**,
   despite having no data prior to 2020, produced similar numbers to the prior Institution. These two should be merged for
   the purposes of this analysis, as if the Physics department is continuous through these years across both Institutions.
   Similar behavior occurs in a handful of other institutions.
@@ -347,10 +347,11 @@ print('TODO:> .')
 ```
 
 - Applied Physics PhDs are granted by a separate department housed in another College, of Engineering or similar,
-  complementary to an Institution's existing Physics department. Only `6` Institutions of this type (for our analysis)
+  complementary to an Institution's existing Physics department. Only `TODO` Institutions of this type (for our analysis)
   exist: specifically `Stanford`, `Yale`, `Univ. Of Michigan - Ann Arbor`, `Columbia`, `Cornell`, and `Rice` 
   Universities. `New York U` also has this split between its College of Liberal Arts and Sciences and an Engineering 
-  College, but the distinction only appears at the `BS/MS` level. 
+  College, but the distinction only appears at the `BS/MS` level starting in 20??, while `Kettering U` has an Applied 
+  Physics program at the `BS` level. 
 
 ### Top 10 States by accumulative `Physics PhDs`
 
