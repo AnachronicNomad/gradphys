@@ -225,7 +225,8 @@ process_data <- \(DATA_DIR) {
           gsub("(King Coll)", "King U", x = _) |>
           gsub("(NJIT/Rutgers U-Newark)", "New Jersey Inst of Tech", x = _) |>
           gsub("(Rutgers U-Newark/NJIT)", "Rutgers U-Newark", x = _) |>
-          gsub("(St\\. Peter's Coll)", "St. Peter's U", x = _)
+          gsub("(St\\. Peter's Coll)", "St. Peter's U", x = _) |>
+          gsub("(MO-U of, Rolla)", "Missouri U of Sci & Tech", x = _)
     ) |>
     mutate(
       Institution = case_when(
@@ -243,11 +244,12 @@ process_data <- \(DATA_DIR) {
         Institution == "Embry-Riddle Aeronautical U" & State == "FL" ~ "Embry-Riddle Aeronautical U (FL)",
         Institution == "Embry-Riddle Aeronautical U" & State == "AZ" ~ "Embry-Riddle Aeronautical U (AZ)",
         Institution == "Georgetown U" & State == "KY" ~ "Georgetown Coll",
+        Institution == "Lincoln U" & State == "MO" ~ "Lincoln U (MO)",
         .default = Institution
       )
     ) |>
     ## remove `TN-U of, Space Inst`, dupl by `TN-U of, Knoxville`, the host Inst.
-    filter(!(Institution == "TN-U of, Space Inst")) |>
+    #filter(!(Institution == "TN-U of, Space Inst")) |>
 
     #####
     ## set column order
