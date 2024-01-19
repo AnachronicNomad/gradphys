@@ -272,6 +272,23 @@ process_data <- \(DATA_DIR) {
       `FirstTerm_Introductory_Physical_Science_and_Astronomy_Course_Enrollments`,
       `Fall_NonUS_Graduate_Student_Enrollments`,
       `Astro_Program`
+    ) |>
+    select(
+      `Year`,
+      `Institution`,
+      `State`,
+      `Highest_Physics_Degree_Offered`,
+      `Fall_Total_Graduate_Student_Enrollments`,
+      `Physics_PhDs`,
+      `Exiting_Physics_Masters`,
+      `Fall_FirstYear_Graduate_Student_Enrollments`,
+      `Physics_Bachelors`,
+      `Fall_Senior_Enrollments`,
+      `Fall_Junior_Enrollments`,
+      `FirstTerm_Introductory_Physics_Course_Enrollments`,
+      `FirstTerm_Introductory_Physical_Science_and_Astronomy_Course_Enrollments`,
+      `Fall_NonUS_Graduate_Student_Enrollments`,
+      `Astro_Program`
     )
   }) |>
 
