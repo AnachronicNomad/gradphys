@@ -348,10 +348,10 @@ print('TODO:> .')
 
 - Applied Physics PhDs are granted by a separate department housed in another College, of Engineering or similar,
   complementary to an Institution's existing Physics department. Only `TODO` Institutions of this type (for our analysis)
-  exist: specifically `Stanford`, `Yale`, `Univ. Of Michigan - Ann Arbor`, `Columbia`, `Cornell`, and `Rice` 
+  exist: specifically `Stanford`, `Yale`, `Harvard`, `Univ. Of Michigan - Ann Arbor`, `Columbia`, `Cornell`, and `Rice` 
   Universities. `New York U` also has this split between its College of Liberal Arts and Sciences and an Engineering 
   College, but the distinction only appears at the `BS/MS` level starting in 20??, while `Kettering U` has an Applied 
-  Physics program at the `BS` level.  UC-Davis had an Applied program that stopped reporting in 2010. 
+  Physics program at the `BS` level.  `UC-Davis` had an Applied program that stopped reporting in 2010. 
 
 ### Top 10 States by accumulative `Physics PhDs`
 
@@ -424,6 +424,14 @@ print('TODO:> .')
     *   Maybe leave this summary graphic until County-level data is established.
 
 ## Additional Data
+
+-   is.HBCU
+
+-   is historically womens'
+
+-   private/public profit/non-profit
+
+-   private christian 
 
 -   Faculty count?
 

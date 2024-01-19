@@ -235,7 +235,8 @@ process_data <- \(DATA_DIR) {
           gsub("(Cal Poly St U-San L\\.O\\.)", "Cal Poly St U-San Luis Obispo", x = _) |>
           gsub("(Elon Coll)", "Elon U", x = _) |>
           gsub("(Manchester Coll)", "Manchester U", x = _) |>
-          gsub("(Utah Valley State Coll)", "Utah Valley U", x = _)
+          gsub("(Utah Valley State Coll)", "Utah Valley U", x = _) |>
+          gsub("(Mount Union Coll)", "Mount Union-U of", x = _)
     ) |>
     mutate(
       Institution = case_when(
