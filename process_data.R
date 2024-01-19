@@ -233,6 +233,7 @@ process_data <- \(DATA_DIR) {
           gsub("(Bridgewater State Coll)", "Bridgewater State U", x = _) |>
           gsub("(W\\. Virginia Wesleyan Coll)", "West Virginia Wesleyan Coll", x = _) |>
           gsub("(Cal Poly St U-San L\\.O\\.)", "Cal Poly St U-San Luis Obispo", x = _)
+          gsub("(Elon Coll)", "Elon U", x = _)
     ) |>
     mutate(
       Institution = case_when(
@@ -251,6 +252,7 @@ process_data <- \(DATA_DIR) {
         Institution == "Embry-Riddle Aeronautical U" & State == "AZ" ~ "Embry-Riddle Aeronautical U (AZ)",
         Institution == "Georgetown U" & State == "KY" ~ "Georgetown Coll",
         Institution == "Lincoln U" & State == "MO" ~ "Lincoln U (MO)",
+        Institution == "Lincoln U" & State == "PA" ~ "Lincoln U (PA)",
         Institution == "Bethel Coll" & State == "MN" ~ "Bethel U",
         Institution == "St. John's U" & State == "MN" ~ "Coll of St. Benedict / St. John's U",
         .default = Institution
