@@ -238,7 +238,15 @@ process_data <- \(DATA_DIR) {
           gsub("(Manchester Coll)", "Manchester U", x = _) |>
           gsub("(Utah Valley State Coll)", "Utah Valley U", x = _) |>
           gsub("(Mount Union Coll)", "Mount Union-U of", x = _) |>
-          gsub("(Albertson Coll of Idaho)", "Coll of Idaho", x = _)
+          gsub("(Albertson Coll of Idaho)", "Coll of Idaho", x = _) |>
+          gsub("(Cal St U-Hayward)", "Cal St U-East Bay", x = _) |>
+          gsub("(Point Loma Nazarene Coll)", "Point Loma Nazarene U", x = _) |>
+          gsub("(Colorado St U, Fort Collins)", "Colorado St U-Fort Collins", x = _) |>
+          gsub("(Colorado State U)", "Colorado St U-Fort Collins", x = _) |>
+          gsub("(Yale U \\(Appl Sci\\))", "Yale U (Appl Phys)", x = _) |>
+          gsub("(West Georgia-State U of)", "West Georgia-U of", x = _) |>
+          gsub("(North Georgia Coll & St U)", "North Georgia-U of", x = _) |>
+          gsub("(Notre Dame-Coll of, MD)", "Notre Dame of MD U", x = _)
     ) |>
     mutate(
       Institution = case_when(
