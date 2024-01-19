@@ -425,13 +425,17 @@ print('TODO:> .')
 
 ## Additional Data
 
--   is.HBCU
+-   is HBCU
 
 -   is historically womens'
 
--   private/public profit/non-profit
+-   is private/public 
 
--   private christian 
+-   is profit/non-profit
+
+-   is private christian 
+
+-   is land-grant
 
 -   Faculty count?
 
