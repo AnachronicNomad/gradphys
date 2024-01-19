@@ -163,9 +163,9 @@ process_data <- \(DATA_DIR) {
       )
     ) |>
     mutate(
-      Institution <-
-        gsub("'", '', Institution) |>
-        gsub("\\*", '', Institution) |>
+      Institution = Institution |>
+        gsub("'", '', x = _) |>
+        gsub("*", '', x = _) |>
         trimws(which = "both")
     ) |>
     #####
