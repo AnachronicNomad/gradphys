@@ -247,6 +247,7 @@ process_data <- \(DATA_DIR) {
         Institution == "Embry-Riddle Aeronautical U" & State == "AZ" ~ "Embry-Riddle Aeronautical U (AZ)",
         Institution == "Georgetown U" & State == "KY" ~ "Georgetown Coll",
         Institution == "Lincoln U" & State == "MO" ~ "Lincoln U (MO)",
+        Institution == "Bethel Coll" & State == "MN" ~ "Bethel U",
         .default = Institution
       )
     ) |>
