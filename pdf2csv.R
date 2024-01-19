@@ -72,14 +72,20 @@ for (.file in files) {
   print(.file)
   tmp <- extract_tables(.file,
                         output = 'data.frame',
-                        pages = c(3:get_n_pages(.file)), ## Year \in [2006, 2022-]
-                        #pages = c(5:get_n_pages(.file)), ## Year \in [199?-, 2005]
+                        pages = c(3:get_n_pages(.file)), ## Year \in [2001, 2022-]
+                        #pages = c(5:get_n_pages(.file)), ## Year \in [2000, ]
                         method = 'lattice',
                         guess = F,
+                        ## Year \in [2001, 2003]
+                        #columns = list(c(46, 176, 221.5, 282, 316.5, 350, 464, 381, 421, 451, 502, 540))
+                        ## Year \in [2004, ]
+                        columns = list(c(47, 190, 238, 303, 336, 366.5, 396.5, 436, 466, 514.5, 552))
+                        ## Year \in [2005, ]
+                        #columns = list(c(28, 171, 200, 244, 312, 342, 374, 404, 440, 472, 521, 567))
+                        ## Year \in [2012, 2013]
+                        #columns = list(c(40, 222, 243, 300, 377, 419.5, 464, 506.5, 568.5, 609, 680, 729))
                         ## Year \in [2006, 2011], [2014-2022]
                         #columns = list(c(27, 169, 201, 245, 310, 345, 377, 405, 441, 471, 526, 563))
-                        ## Year \in [2012, 2013]
-                        columns = list(c(40, 222, 243, 300, 377, 419.5, 464, 506.5, 568.5, 609, 680, 729))
                         #area = list(c(90, 0, 792, 650)) # top,left,bottom,right
                         )
 
@@ -88,7 +94,7 @@ for (.file in files) {
     colnames(tmp[[i]]) <- c(
       'Highest Physics Degree Offered',
       'Institution',
-      'Astro Program',
+      #'Astro Program',
       'First-Term Introductory Physics Course Enrollments',
       'First-Term Introductory Physical Science & Astronomy Course Enrollments',
       'Fall Junior Enrollments',
@@ -111,8 +117,8 @@ for (.file in files) {
       tbl |>
       mutate_at(
         c(
-          'First-Term Physics & Astronomy Course Enrollments',
-          'First-Term Physical Sci & Astronomy Course Enrollments',
+          'First-Term Introductory Physics Course Enrollments',
+          'First-Term Introductory Physical Science & Astronomy Course Enrollments',
           'Fall Junior Enrollments',
           'Fall Senior Enrollments',
           'Fall Total Graduate Student Enrollments',
@@ -126,7 +132,7 @@ for (.file in files) {
       ) |>
       mutate_at(
         c(
-          'Astro Program',
+          #'Astro Program',
           'Highest Physics Degree Offered'
         ),
         as.factor
@@ -168,9 +174,9 @@ for (.file in files) {
       `Institution`,
       `State`,
       `Highest Physics Degree Offered`,
-      `Astro Program`,
-      `First-Term Physics & Astronomy Course Enrollments`,
-      `First-Term Physical Sci & Astronomy Course Enrollments`,
+      #`Astro Program`,
+      `First-Term Introductory Physics Course Enrollments`,
+      `First-Term Introductory Physical Science & Astronomy Course Enrollments`,
       `Fall Junior Enrollments`,
       `Fall Senior Enrollments`,
       `Fall Total Graduate Student Enrollments`,
@@ -181,6 +187,6 @@ for (.file in files) {
       `Physics PhDs`
     )
 
-  .file <- gsub("\\.pdf", ".xlsx", .file);
+  .file <- gsub("\\.pdf", ".xlsx", .file)
   write_xlsx(list(data = tbl), .file)
 }

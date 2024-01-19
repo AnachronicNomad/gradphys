@@ -52,6 +52,7 @@ process_data <- \(DATA_DIR) {
             gsub('(Fall [1-2]{1}([0-1]|[8-9]){1}([0-9]){1}[0-9]{1})', 'Fall', x = _, perl=TRUE) |>
             gsub('(^(20[0-9]{2}\\-[0-9]{2})\\s+)|(\\-)', '', x = _, perl=TRUE) |>
             gsub('\\s*(\\w+)\\s+', '\\1_', x = _, perl=TRUE)
+            #gsub('(First-Term)', 'FirstTerm', x = _, perl=TRUE)
         }
       ) |>
 
