@@ -360,8 +360,90 @@ process_data <- \(DATA_DIR) {
   data <- data |> ungroup()
   data <- full_join(data, gdata)
 
-  ## TODO :> fix 2015/2016 `Highest_Degree_Offered` mismatch on `NA` value reports
+  ## `UT-Brownsville` + `UT-PanAm` -> `UT-RioGrandeValley`
+  gdata <-
+    data |>
+    filter(Institution %in% c(
+      "Texas-U of, at Brownsville",
+      "Texas-U of, Pan American",
+      "Texas-U of, Rio Grande Valley"
+    ))
 
+  data <- anti_join(data, gdata, by = 'Institution')
+
+  gdata <-
+    gdata |>
+    ungroup() |>
+    mutate(
+      Institution = "Texas-U of, Rio Grande Valley",
+      `Highest_Physics_Degree_Offered` = case_when(
+       `Highest_Physics_Degree_Offered` == 'BS' ~ 'MS',
+       .default = `Highest_Physics_Degree_Offered`
+      )
+    ) |>
+    group_by(Year) |>
+    summarise(
+      `Year` = Year,
+      `Institution` = Institution,
+      `State` = State,
+      `Highest_Physics_Degree_Offered` = Highest_Physics_Degree_Offered,
+      `Fall_Total_Graduate_Student_Enrollments` = sum(Fall_Total_Graduate_Student_Enrollments),
+      `Physics_PhDs` = sum(Physics_PhDs),
+      `Exiting_Physics_Masters` = sum(Exiting_Physics_Masters),
+      `Fall_FirstYear_Graduate_Student_Enrollments` = sum(Fall_FirstYear_Graduate_Student_Enrollments),
+      `Physics_Bachelors` = sum(Physics_Bachelors),
+      `Fall_Senior_Enrollments` = sum(Fall_Senior_Enrollments),
+      `Fall_Junior_Enrollments` = sum(Fall_Junior_Enrollments),
+      `FirstTerm_Introductory_Physics_Course_Enrollments` = sum(FirstTerm_Introductory_Physics_Course_Enrollments),
+      `FirstTerm_Introductory_Physical_Science_and_Astronomy_Course_Enrollments` = sum(FirstTerm_Introductory_Physical_Science_and_Astronomy_Course_Enrollments),
+      `Fall_NonUS_Graduate_Student_Enrollments` = sum(Fall_NonUS_Graduate_Student_Enrollments),
+      `Astro_Program` = Astro_Program
+    ) |>
+    distinct()
+
+  data <- data |> ungroup()
+  data <- full_join(data, gdata)
+
+  ## `Mansfield U` + `Lock Haven U` + `Bloomsburg U` -> `Commonwealth U of PA`
+  gdata <-
+    data |>
+    filter(Institution %in% c(
+      "Mansfield U",
+      "Lock Haven U",
+      "Bloomsburg U",
+      "Commonwealth U of PA"
+    ))
+
+  data <- anti_join(data, gdata, by = 'Institution')
+
+  gdata <-
+    gdata |>
+    ungroup() |>
+    mutate(
+      Institution = "Commonwealth U of PA",
+    ) |>
+    group_by(Year) |>
+    summarise(
+      `Year` = Year,
+      `Institution` = Institution,
+      `State` = State,
+      `Highest_Physics_Degree_Offered` = Highest_Physics_Degree_Offered,
+      `Fall_Total_Graduate_Student_Enrollments` = sum(Fall_Total_Graduate_Student_Enrollments),
+      `Physics_PhDs` = sum(Physics_PhDs),
+      `Exiting_Physics_Masters` = sum(Exiting_Physics_Masters),
+      `Fall_FirstYear_Graduate_Student_Enrollments` = sum(Fall_FirstYear_Graduate_Student_Enrollments),
+      `Physics_Bachelors` = sum(Physics_Bachelors),
+      `Fall_Senior_Enrollments` = sum(Fall_Senior_Enrollments),
+      `Fall_Junior_Enrollments` = sum(Fall_Junior_Enrollments),
+      `FirstTerm_Introductory_Physics_Course_Enrollments` = sum(FirstTerm_Introductory_Physics_Course_Enrollments),
+      `FirstTerm_Introductory_Physical_Science_and_Astronomy_Course_Enrollments` = sum(FirstTerm_Introductory_Physical_Science_and_Astronomy_Course_Enrollments),
+      `Fall_NonUS_Graduate_Student_Enrollments` = sum(Fall_NonUS_Graduate_Student_Enrollments),
+      `Astro_Program` = Astro_Program
+    ) |>
+    distinct()
+
+  data <- data |> ungroup()
+  data <- full_join(data, gdata)
   ## Group and Sort
   data <- data |>
     ## group observations of Institution by Year, then by State
