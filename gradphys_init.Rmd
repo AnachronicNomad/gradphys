@@ -351,7 +351,7 @@ print('TODO:> .')
   exist: specifically `Stanford`, `Yale`, `Univ. Of Michigan - Ann Arbor`, `Columbia`, `Cornell`, and `Rice` 
   Universities. `New York U` also has this split between its College of Liberal Arts and Sciences and an Engineering 
   College, but the distinction only appears at the `BS/MS` level starting in 20??, while `Kettering U` has an Applied 
-  Physics program at the `BS` level. 
+  Physics program at the `BS` level.  UC-Davis had an Applied program that stopped reporting in 2010. 
 
 ### Top 10 States by accumulative `Physics PhDs`
 
