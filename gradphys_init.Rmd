@@ -29,9 +29,12 @@ library(fontawesome)
 ```
 
 ```{css, echo = F}
-div.main-container { max-width: inherit; }
+div.main-container { 
+  max-width: inherit; 
+  margin: 2em;
+}
 body {
-  margin: 2rem
+  margin: 4em;
 }
 ```
 
@@ -136,6 +139,7 @@ rxtbl <- tdata |>
             header = function(value) gsub(".", " ", value, fixed = TRUE),
             headerClass = "sticky",
             cell = function(value) format(value, nsmall = 1),
+            filterable = F,
             align = "center",
             minWidth = 100,
             headerStyle = list(background = "#f7f7f8"),
@@ -169,70 +173,60 @@ rxtbl <- tdata |>
             name = 'Institution',
             align = 'left',
             minWidth = 240,
-            sticky = "left"
+            sticky = "left",
+            filterable = T
             ),
           `State` = colDef(
             name = 'State',
-            align = 'center',
             aggregate = 'unique',
+            filterable = T
             ),
           `Highest_Physics_Degree_Offered` = colDef(
             name = "Highest Physics Degree Offered",
             aggregate = "unique",
-            align = 'center',
             ),
           `Fall_Total_Graduate_Student_Enrollments` = colDef(
             name = "Total Grad Student Enrollment (Fall)\n(Averaged)",
             aggregate = "mean",
-            align = 'left',
             ),
           `Physics_PhDs` = colDef(
             name = "Physics PhDs\n(Accum)",
             aggregate = "sum",
-            align = 'center',
             format = colFormat(digits=0)
             ),
           `Exiting_Physics_Masters` = colDef(
             name = "Exiting Physics Masters\n(Accum)",
             aggregate = "sum",
-            align = 'center',
             format = colFormat(digits=0)
             ),
           `Fall_FirstYear_Graduate_Student_Enrollments` = colDef(
             name = "First-Year Grad Student Enrollment (Fall)\n(Averaged)",
             aggregate = "mean",
-            align = "left",
             ),
           `Physics_Bachelors` = colDef(
             name = "Physics Bachelors\n(Accum)",
             aggregate = "sum",
-            align = "center",
             format = colFormat(digits=0)
             ),
           `Fall_Senior_Enrollments` = colDef(
             name = "Senior Enrollment (Fall)\n(Averaged)",
             aggregate = "mean",
-            align = "center",
             ),
           `Fall_Junior_Enrollments` = colDef(
             name = "Junior Enrollment (Fall)\n(Averaged)",
             aggregate = "mean",
-            align = "center",
             ),
           `FirstTerm_Introductory_Physics_Course_Enrollments` = colDef(
             name = "First-Term Intro Physics Course Enrollment\n(Averaged)",
             aggregate = "mean",
-            align = "left"
             ),
           `FirstTerm_Introductory_Physical_Science_and_Astronomy_Course_Enrollments` = colDef(
             name = "First-Term Intro Phys. Sci. and Astro. Course Enrollment\n(Averaged)",
             aggregate = "mean",
-            align = "left"
             ),
           `Fall_NonUS_Graduate_Student_Enrollments` = colDef(
             name = "Non-US Grad Student Enrollment (Fall)\n(Averaged)",
             aggregate = "mean",
-            align = "left"
             ),
           `Astro_Program` = colDef(
             name = "Astro Program?",
