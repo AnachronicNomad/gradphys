@@ -226,7 +226,7 @@ process_data <- \(DATA_DIR) {
           gsub("(King Coll)", "King U", x = _) |>
           gsub("(NJIT/Rutgers U-Newark)", "New Jersey Inst of Tech", x = _) |>
           gsub("(Rutgers U-Newark/NJIT)", "Rutgers U-Newark", x = _) |>
-          gsub("(St\\. Peter's Coll)", "St. Peter's U", x = _) |>
+          gsub("(St\\. Peters Coll)", "St. Peters U", x = _) |>
           gsub("(MO-U of, Rolla)", "Missouri U of Sci & Tech", x = _) |>
           gsub("(Metropolitan St Coll of Denver)", "Metropolitan St U of Denver", x = _) |>
           gsub("(Mesa State Coll)", "Colorado Mesa U", x = _) |>
@@ -246,7 +246,19 @@ process_data <- \(DATA_DIR) {
           gsub("(Yale U \\(Appl Sci\\))", "Yale U (Appl Phys)", x = _) |>
           gsub("(West Georgia-State U of)", "West Georgia-U of", x = _) |>
           gsub("(North Georgia Coll & St U)", "North Georgia-U of", x = _) |>
-          gsub("(Notre Dame-Coll of, MD)", "Notre Dame of MD U", x = _)
+          gsub("(Notre Dame-Coll of, MD)", "Notre Dame of MD U", x = _) |>
+          gsub("(Cumberland Coll)", "Cumberlands-U of the", x = _) |>
+          gsub("(Missouri Southern St Coll)", "Missouri Southern St U", x = _) |>
+          gsub("(Missouri St U)", "Missouri State U", x = _) |>
+          gsub("(Central Missouri State U)", "Central Missouri-U of", x = _) |>
+          gsub("(Southwest Missouri State U)", "Missouri State U", x = _) |>
+          gsub("(Georgian Court Coll)", "Georgian Court U", x = _) |>
+          gsub("(OK-U of Sci and Arts)", "Sci and Arts of OK-U of", x = _) |>
+          gsub("(Southwest Texas St U)", "Texas State U", x = _) |>
+          gsub("(Houston-U of-Downtown)", "Houston-U of, Downtown", x = _) |>
+          gsub("(Mary Washington Coll)", "Mary Washington-U of", x = _) |>
+          gsub("(Virginia Tech)", "Virginia Polytech Inst & St U", x = _) |>
+          gsub("(Randolph-Macon Womans Coll)", "Randolph Coll", x = _)
     ) |>
     mutate(
       Institution = case_when(
@@ -267,8 +279,8 @@ process_data <- \(DATA_DIR) {
         Institution == "Lincoln U" & State == "MO" ~ "Lincoln U (MO)",
         Institution == "Lincoln U" & State == "PA" ~ "Lincoln U (PA)",
         Institution == "Bethel Coll" & State == "MN" ~ "Bethel U",
-        Institution == "St. John's U" & State == "MN" ~ "Coll of St. Benedict / St. John's U",
-        Institution == "Loyola Coll" & State == "LA" ~ "Loyola U of MD",
+        Institution == "St. Johns U" & State == "MN" ~ "Coll of St. Benedict / St. Johns U",
+        Institution == "Loyola Coll" & State == "MD" ~ "Loyola U of MD",
         .default = Institution
       )
     ) |>
