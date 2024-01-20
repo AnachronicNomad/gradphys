@@ -36,6 +36,13 @@ div.main-container {
 body {
   margin: 4em;
 }
+
+.tbl-header {
+  word-break: normal;
+  overflow-wrap: normal;
+  white-space: break-spaces;
+  hyphens: none;
+}
 ```
 
 # Background [WIP]
@@ -130,6 +137,7 @@ rxtbl <- tdata |>
         striped = T,
         highlight = T,
         compact = T,
+        fullWidth = T, 
         pagination = F,
         showPageSizeOptions = T,
         pageSizeOptions = c(6, 12, 18),
@@ -137,7 +145,7 @@ rxtbl <- tdata |>
         height = 768,
         defaultColDef = colDef(
             header = function(value) gsub(".", " ", value, fixed = TRUE),
-            headerClass = "sticky",
+            headerClass = "sticky tbl-header",
             cell = function(value) format(value, nsmall = 1),
             filterable = F,
             align = "center",
