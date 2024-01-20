@@ -1,12 +1,20 @@
 ---
 title: "gradphys"
+geometry: "left=1em, right=1em, top=1em, bottom=1em"
 output: 
   html_document: 
     toc: true
+    toc_depth: 3
+    #toc_float: 
+    #  collapsed: true 
+    #  smooth_scroll: false
     keep_md: true
+    df_print: paged
     code_folding: hide
     highlight: zenburn
     theme:
+      version: 5
+      bootswatch: spacelab
       bslib: TRUE
     number_sections: true
 date: "2023-12-21"
@@ -15,7 +23,16 @@ date: "2023-12-21"
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 library(fontawesome)
-library(bslib)
+#library(bslib)
+
+#bslib::bs_themer()
+```
+
+```{css, echo = F}
+div.main-container { max-width: inherit; }
+body {
+  margin: 2rem
+}
 ```
 
 # Background [WIP]
@@ -63,7 +80,7 @@ occurred.  For a complete listing of the modifications made to `Institution` nam
 `269-317` in the process used to incorporate this data. The data pipeline is encoded in a function, `process_data(...)`,
 demonstrated in the following R script:
 
-```{r, file=c('process_data.R')}
+```{r, attr.source='.numberLines', file=c('process_data.R')}
 ```
 
 ## Table
@@ -102,7 +119,7 @@ rxtbl <- tdata |>
         ####
         ##  main table
         ####
-        elementId = 'rosterphys14_22-tbl',
+        elementId = 'rosterphys02_22-tbl',
         filterable = T,
         searchable = T,
         groupBy = c('Institution'),
@@ -240,13 +257,13 @@ shiny::fluidPage(
             tags$button(
               tagList(fontawesome::fa("download"), "\tCSV Data"),
               class = 'btn btn-outline-success',
-              onclick = "Reactable.downloadDataCSV('rosterphys14_22-tbl', 'rosterphys14_22.csv')"
+              onclick = "Reactable.downloadDataCSV('rosterphys02_22-tbl', 'rosterphys02_22.csv')"
             ),
             # Expand/Collapse button
             tags$button(
               "Expand/Collapse\nRows",
               class = 'btn btn-info',
-              onclick = "Reactable.toggleAllRowsExpanded('rosterphys14_22-tbl')",
+              onclick = "Reactable.toggleAllRowsExpanded('rosterphys02_22-tbl')",
             ),
           )
         )
@@ -259,10 +276,10 @@ shiny::fluidPage(
       htmltools::browsable(
           tagList(
               # Group-by selection
-              div(tags$label("Group by", `for` = "rosterphys14_22-select")),
+              div(tags$label("Group by", `for` = "rosterphys02_22-select")),
               tags$select(
-                id = "rosterphys14_22-select",
-                onchange = "Reactable.setGroupBy('rosterphys14_22-tbl', this.value ? [this.value] : [])",
+                id = "rosterphys02_22-select",
+                onchange = "Reactable.setGroupBy('rosterphys02_22-tbl', this.value ? [this.value] : [])",
                 tags$option("None", value = ""),
                 tags$option("Institution", value = "Institution"),
                 tags$option("Program", value = "Highest_Physics_Degree_Offered"),
@@ -300,7 +317,7 @@ print('TODO:> .')
 
 ### PhD Availability by Region
 
-```{r message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r message=FALSE, warning=FALSE, rows.print=7, rownames.print=F, paged.print=TRUE}
 ## `Institutions offering a PhD program as of 2022
 phds_2022 <- 
   rosterdata |>
@@ -311,7 +328,7 @@ phds_2022 <-
     )
   ) |>
   ungroup() |>
-  select(Institution, State) |>
+  select(State, Institution) |>
   distinct() |>
   group_by(State)
 
