@@ -30,11 +30,10 @@ library(fontawesome)
 
 ```{css, echo = F}
 div.main-container { 
-  max-width: inherit; 
-  margin: 2em;
+  max-width: 100vw; 
 }
 body {
-  margin: 4em;
+  margin: 2vw;
 }
 
 .tbl-header {
@@ -149,7 +148,7 @@ rxtbl <- tdata |>
             cell = function(value) format(value, nsmall = 1),
             filterable = F,
             align = "center",
-            minWidth = 100,
+            minWidth = 120,
             headerStyle = list(background = "#f7f7f8"),
             vAlign = 'center',
             headerVAlign = 'bottom',
