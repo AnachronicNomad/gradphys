@@ -34,6 +34,7 @@ div.main-container {
 }
 body {
   margin: 2vw;
+  font-size: 10pt;
 }
 
 .tbl-header {
@@ -146,12 +147,16 @@ rxtbl <- tdata |>
         onClick = "select",
         height = 768,
         rowStyle = JS("
-          function(rowInfo) {
+          function(rowInfo, state) {
+            if (!rowInfo) return;
+          
+            // style nested rows
             if (rowInfo.level > 0) {
               return { background: '#eee', borderLeft: '2px solid #ffa62d' }
             } else {
               return { borderLeft: '2px solid transparent' }
             }
+        
           }
         "),
         #details = function(idx) {
@@ -259,9 +264,21 @@ rxtbl <- tdata |>
           ),
           `Astro_Program` = colDef(
             name = "Astro Program?",
-            minWidth = 64,
+            minWidth = 80,
             align = "right",
-            aggregate = "unique"
+            aggregate = JS("
+              function(values, rows) {
+                return(values
+                        .filter((v) => v == 'combined' || v == 'separate')
+                        .map((v) => v == 'combined' ? 'c' : 's')
+                        .reduce(function (acc, curr) {
+                            if (!acc.includes(curr))
+                                acc.push(curr);
+                            return acc;
+                        }, [])
+                        .join(', '));
+              }
+            ")
           )
         )
     )
@@ -293,24 +310,105 @@ shiny::fluidPage(
         )
       ),
       # filter-by degree
-      filter_checkbox("degree", "Degree Level", tdata, ~Highest_Physics_Degree_Offered),
+      #filter_checkbox("degree", "Degree Level", tdata, ~Highest_Physics_Degree_Offered),
+      # TODO :> sticky column toggle button
       # TODO :> allow column visibility selection in this menu
       # TODO :> allow column stickiness toggle in this menu
       # Group Selection
       htmltools::browsable(
-          tagList(
-              # Group-by selection
-              div(tags$label("Group by", `for` = "rosterphys02_22-select")),
-              tags$select(
-                id = "rosterphys02_22-select",
-                onchange = "Reactable.setGroupBy('rosterphys02_22-tbl', this.value ? [this.value] : [])",
-                tags$option("None", value = ""),
-                tags$option("Institution", value = "Institution"),
-                tags$option("Program", value = "Highest_Physics_Degree_Offered"),
-                tags$option("State", value = "State"),
-                tags$option("Year", value = "Year")
+        tagList(
+          tags$div(
+            class = "p-2",
+            tags$b(
+              tags$label("Group By", `for` = "rosterphys02_22-grp_select"),
+            ),
+            tags$ul(
+              id = "rosterphys02_22-grp_select",
+              class = "list-group",
+              tags$li(
+                class = "list-group-item",
+                tags$input(
+                  class = "form-check-input me-1",
+                  type = "checkbox",
+                  value = "State",
+                  id = "grp_select-state",
+                  onchange = "Reactable.setGroupBy(
+                    'rosterphys02_22-tbl',
+                    [...document.querySelectorAll('#rosterphys02_22-grp_select li input[type=checkbox]')]
+                    .map((e) => e.checked ? e.value : false)
+                    .filter((w) => w !== false)
+                  )"
+                ),
+                tags$label(
+                  "State",
+                  class = "form-check-label",
+                  `for` = "grp_select-state",
+                )
               ),
-          )
+              tags$li(
+                class = "list-group-item",
+                tags$input(
+                  class = "form-check-input me-1",
+                  type = "checkbox",
+                  value = "Highest_Physics_Degree_Offered",
+                  id = "grp_select-program",
+                  onchange = "Reactable.setGroupBy(
+                    'rosterphys02_22-tbl',
+                    [...document.querySelectorAll('#rosterphys02_22-grp_select li input[type=checkbox]')]
+                    .map((e) => e.checked ? e.value : false)
+                    .filter((w) => w !== false)
+                  )"
+                ),
+                tags$label(
+                  "Program",
+                  class = "form-check-label",
+                  `for` = "grp_select-program",
+                )
+              ),
+              tags$li(
+                class = "list-group-item",
+                tags$input(
+                  class = "form-check-input me-1",
+                  type = "checkbox",
+                  value = "Year",
+                  id = "grp_select-year",
+                  onchange = "Reactable.setGroupBy(
+                    'rosterphys02_22-tbl',
+                    [...document.querySelectorAll('#rosterphys02_22-grp_select li input[type=checkbox]')]
+                    .map((e) => e.checked ? e.value : false)
+                    .filter((w) => w !== false)
+                  )"
+                ),
+                tags$label(
+                  "Year",
+                  class = "form-check-label",
+                  `for` = "grp_select-year",
+                )
+              ),
+              tags$li(
+                class = "list-group-item",
+                tags$input(
+                  class = "form-check-input me-1",
+                  type = "checkbox",
+                  value = "Institution",
+                  id = "grp_select-inst",
+                  checked = NA,
+                  onchange = "Reactable.setGroupBy(
+                    'rosterphys02_22-tbl',
+                    [...document.querySelectorAll('#rosterphys02_22-grp_select li input[type=checkbox]')]
+                    .map((e) => e.checked ? e.value : false)
+                    .filter((w) => w !== false)
+                  )"
+                ),
+                tags$label(
+                  "Institution",
+                  class = "form-check-label",
+                  `for` = "grp_select-inst",
+                )
+              ),
+            )
+          ),
+        )
       ),
     ),
     shiny::column(
