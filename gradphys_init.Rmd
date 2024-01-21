@@ -145,15 +145,15 @@ rxtbl <- tdata |>
         selection = "multiple",
         onClick = "select",
         height = 768,
-        #rowStyle = JS("
-        #  function(rowInfo) {
-        #    if (rowInfo.level > 0) {
-        #      return { background: '#eee', borderLeft: '2px solid #ffa62d' }
-        #    } else {
-        #      return { borderLeft: '2px solid transparent' }
-        #    }
-        #  }
-        #"),
+        rowStyle = JS("
+          function(rowInfo) {
+            if (rowInfo.level > 0) {
+              return { background: '#eee', borderLeft: '2px solid #ffa62d' }
+            } else {
+              return { borderLeft: '2px solid transparent' }
+            }
+          }
+        "),
         #details = function(idx) {
         #  d <- rosterdata |> filter(Institution == rosterdata$Institution[idx])
         #  htmltools::div(style = "padding: 1rem",
