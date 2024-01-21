@@ -312,8 +312,6 @@ shiny::fluidPage(
       # filter-by degree
       #filter_checkbox("degree", "Degree Level", tdata, ~Highest_Physics_Degree_Offered),
       # TODO :> sticky column toggle button
-      # TODO :> allow column visibility selection in this menu
-      # TODO :> allow column stickiness toggle in this menu
       # Group Selection
       htmltools::browsable(
         tagList(
@@ -404,6 +402,248 @@ shiny::fluidPage(
                   "Institution",
                   class = "form-check-label",
                   `for` = "grp_select-inst",
+                )
+              ),
+            )
+          ),
+          # column visibility selection
+          tags$div(
+            class = "p-2",
+            tags$b(
+              tags$label("Visible Columns", `for` = "rosterphys02_22-vis_select"),
+            ),
+            tags$ul(
+              id = "rosterphys02_22-vis_select",
+              class = "list-group",
+              tags$li(
+                class = "list-group-item",
+                tags$input(
+                  class = "form-check-input me-1",
+                  type = "checkbox",
+                  checked = NA,
+                  value = "Fall_Total_Graduate_Student_Enrollments",
+                  id = "vis_select-state",
+                  onchange = "Reactable.setHiddenColumns(
+                    'rosterphys02_22-tbl',
+                    [...document.querySelectorAll('#rosterphys02_22-vis_select li input[type=checkbox]')]
+                    .map((e) => e.checked ? false : e.value)
+                    .filter((w) => w !== false)
+                  )"
+                ),
+                tags$label(
+                  "Total Grad Students",
+                  class = "form-check-label",
+                  `for` = "vis_select-state",
+                )
+              ),
+              tags$li(
+                class = "list-group-item",
+                tags$input(
+                  class = "form-check-input me-1",
+                  type = "checkbox",
+                  checked = NA,
+                  value = "Physics_PhDs",
+                  id = "vis_select-state",
+                  onchange = "Reactable.setHiddenColumns(
+                    'rosterphys02_22-tbl',
+                    [...document.querySelectorAll('#rosterphys02_22-vis_select li input[type=checkbox]')]
+                    .map((e) => e.checked ? false : e.value)
+                    .filter((w) => w !== false)
+                  )"
+                ),
+                tags$label(
+                  "PhDs",
+                  class = "form-check-label",
+                  `for` = "vis_select-state",
+                )
+              ),
+              tags$li(
+                class = "list-group-item",
+                tags$input(
+                  class = "form-check-input me-1",
+                  type = "checkbox",
+                  checked = NA,
+                  value = "Exiting_Physics_Masters",
+                  id = "vis_select-state",
+                  onchange = "Reactable.setHiddenColumns(
+                    'rosterphys02_22-tbl',
+                    [...document.querySelectorAll('#rosterphys02_22-vis_select li input[type=checkbox]')]
+                    .map((e) => e.checked ? false : e.value)
+                    .filter((w) => w !== false)
+                  )"
+                ),
+                tags$label(
+                  "MS",
+                  class = "form-check-label",
+                  `for` = "vis_select-state",
+                )
+              ),
+              tags$li(
+                class = "list-group-item",
+                tags$input(
+                  class = "form-check-input me-1",
+                  type = "checkbox",
+                  checked = NA,
+                  value = "Fall_FirstYear_Graduate_Student_Enrollments",
+                  id = "vis_select-state",
+                  onchange = "Reactable.setHiddenColumns(
+                    'rosterphys02_22-tbl',
+                    [...document.querySelectorAll('#rosterphys02_22-vis_select li input[type=checkbox]')]
+                    .map((e) => e.checked ? false : e.value)
+                    .filter((w) => w !== false)
+                  )"
+                ),
+                tags$label(
+                  "First-Year Grad Stdnts",
+                  class = "form-check-label",
+                  `for` = "vis_select-state",
+                )
+              ),
+              tags$li(
+                class = "list-group-item",
+                tags$input(
+                  class = "form-check-input me-1",
+                  type = "checkbox",
+                  checked = NA,
+                  value = "Physics_Bachelors",
+                  id = "vis_select-state",
+                  onchange = "Reactable.setHiddenColumns(
+                    'rosterphys02_22-tbl',
+                    [...document.querySelectorAll('#rosterphys02_22-vis_select li input[type=checkbox]')]
+                    .map((e) => e.checked ? false : e.value)
+                    .filter((w) => w !== false)
+                  )"
+                ),
+                tags$label(
+                  "BS",
+                  class = "form-check-label",
+                  `for` = "vis_select-state",
+                )
+              ),
+              tags$li(
+                class = "list-group-item",
+                tags$input(
+                  class = "form-check-input me-1",
+                  type = "checkbox",
+                  checked = NA,
+                  value = "Fall_Senior_Enrollments",
+                  id = "vis_select-state",
+                  onchange = "Reactable.setHiddenColumns(
+                    'rosterphys02_22-tbl',
+                    [...document.querySelectorAll('#rosterphys02_22-vis_select li input[type=checkbox]')]
+                    .map((e) => e.checked ? false : e.value)
+                    .filter((w) => w !== false)
+                  )"
+                ),
+                tags$label(
+                  "Seniors",
+                  class = "form-check-label",
+                  `for` = "vis_select-state",
+                )
+              ),
+              tags$li(
+                class = "list-group-item",
+                tags$input(
+                  class = "form-check-input me-1",
+                  type = "checkbox",
+                  checked = NA,
+                  value = "Fall_Junior_Enrollments",
+                  id = "vis_select-state",
+                  onchange = "Reactable.setHiddenColumns(
+                    'rosterphys02_22-tbl',
+                    [...document.querySelectorAll('#rosterphys02_22-vis_select li input[type=checkbox]')]
+                    .map((e) => e.checked ? false : e.value)
+                    .filter((w) => w !== false)
+                  )"
+                ),
+                tags$label(
+                  "Juniors",
+                  class = "form-check-label",
+                  `for` = "vis_select-state",
+                )
+              ),
+              tags$li(
+                class = "list-group-item",
+                tags$input(
+                  class = "form-check-input me-1",
+                  type = "checkbox",
+                  checked = NA,
+                  value = "FirstTerm_Introductory_Physics_Course_Enrollments",
+                  id = "vis_select-state",
+                  onchange = "Reactable.setHiddenColumns(
+                    'rosterphys02_22-tbl',
+                    [...document.querySelectorAll('#rosterphys02_22-vis_select li input[type=checkbox]')]
+                    .map((e) => e.checked ? false : e.value)
+                    .filter((w) => w !== false)
+                  )"
+                ),
+                tags$label(
+                  "Phys 1+2 Enrollments",
+                  class = "form-check-label",
+                  `for` = "vis_select-state",
+                )
+              ),
+              tags$li(
+                class = "list-group-item",
+                tags$input(
+                  class = "form-check-input me-1",
+                  type = "checkbox",
+                  checked = NA,
+                  value = "FirstTerm_Introductory_Physical_Science_and_Astronomy_Course_Enrollments",
+                  id = "vis_select-state",
+                  onchange = "Reactable.setHiddenColumns(
+                    'rosterphys02_22-tbl',
+                    [...document.querySelectorAll('#rosterphys02_22-vis_select li input[type=checkbox]')]
+                    .map((e) => e.checked ? false : e.value)
+                    .filter((w) => w !== false)
+                  )"
+                ),
+                tags$label(
+                  "PhySci+Astro Enrollments",
+                  class = "form-check-label",
+                  `for` = "vis_select-state",
+                )
+              ),
+              tags$li(
+                class = "list-group-item",
+                tags$input(
+                  class = "form-check-input me-1",
+                  type = "checkbox",
+                  checked = NA,
+                  value = "Fall_NonUS_Graduate_Student_Enrollments",
+                  id = "vis_select-state",
+                  onchange = "Reactable.setHiddenColumns(
+                    'rosterphys02_22-tbl',
+                    [...document.querySelectorAll('#rosterphys02_22-vis_select li input[type=checkbox]')]
+                    .map((e) => e.checked ? false : e.value)
+                    .filter((w) => w !== false)
+                  )"
+                ),
+                tags$label(
+                  "Non-US Grad Stdnts",
+                  class = "form-check-label",
+                  `for` = "vis_select-state",
+                )
+              ),
+              tags$li(
+                class = "list-group-item",
+                tags$input(
+                  class = "form-check-input me-1",
+                  type = "checkbox",
+                  checked = NA,
+                  value = "Astro_Program",
+                  id = "vis_select-state",
+                  onchange = "Reactable.setHiddenColumns(
+                    'rosterphys02_22-tbl',
+                    [...document.querySelectorAll('#rosterphys02_22-vis_select li input[type=checkbox]')]
+                    .map((e) => e.checked ? false : e.value)
+                    .filter((w) => w !== false)
+                  )"
+                ),
+                tags$label(
+                  "Astro Dept",
+                  class = "form-check-label",
+                  `for` = "vis_select-state",
                 )
               ),
             )
