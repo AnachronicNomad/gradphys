@@ -669,7 +669,7 @@ shiny::fluidPage(
                               ) +
                               geom_line(
                                 aes(group = Institution, color = Institution),
-                                alpha = 0.1
+                                alpha = 0.2
                               ) +
                               geom_smooth()
                     
