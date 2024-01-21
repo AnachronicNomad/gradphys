@@ -102,6 +102,7 @@ These have been marked as **Accumulative** or **Averaged**. Data at the individu
 ----
 
 ```{r message=F, warning=F, message=F, paged.print=TRUE}
+
 library(tidyverse)
 library(reactable)
 library(ggplot2)
@@ -133,7 +134,7 @@ rxtbl <- tdata |>
         searchable = T,
         groupBy = c('Institution'),
         bordered = T,
-        striped = T,
+        #striped = T,
         highlight = T,
         compact = T,
         fullWidth = T, 
@@ -141,7 +142,27 @@ rxtbl <- tdata |>
         showPageSizeOptions = T,
         pageSizeOptions = c(6, 12, 18),
         paginationType = "jump",
+        selection = "multiple",
+        onClick = "select",
         height = 768,
+        #rowStyle = JS("
+        #  function(rowInfo) {
+        #    if (rowInfo.level > 0) {
+        #      return { background: '#eee', borderLeft: '2px solid #ffa62d' }
+        #    } else {
+        #      return { borderLeft: '2px solid transparent' }
+        #    }
+        #  }
+        #"),
+        #details = function(idx) {
+        #  d <- rosterdata |> filter(Institution == rosterdata$Institution[idx])
+        #  htmltools::div(style = "padding: 1rem",
+        #    reactable(
+        #      d, 
+        #      outlined = TRUE
+        #    )
+        #  )
+        #},
         defaultColDef = colDef(
             header = function(value) gsub(".", " ", value, fixed = TRUE),
             headerClass = "sticky tbl-header",
@@ -175,71 +196,73 @@ rxtbl <- tdata |>
             sticky = "left",
             sortable = T,
             defaultSortOrder = "asc"
-            ),
+          ),
           `Institution` = colDef(
             name = 'Institution',
             align = 'left',
             minWidth = 240,
             sticky = "left",
             filterable = T
-            ),
+          ),
           `State` = colDef(
             name = 'State',
+            minWidth = 64,
             aggregate = 'unique',
             filterable = T
-            ),
+          ),
           `Highest_Physics_Degree_Offered` = colDef(
             name = "Highest Physics Degree Offered",
             aggregate = "unique",
-            ),
+          ),
           `Fall_Total_Graduate_Student_Enrollments` = colDef(
-            name = "Total Grad Student Enrollment (Fall)\n(Averaged)",
+            name = "Total Grad Student Enrollment (Fall)\n (Averaged)",
             aggregate = "mean",
-            ),
+          ),
           `Physics_PhDs` = colDef(
-            name = "Physics PhDs\n(Accum)",
+            name = "Physics PhDs\n (Accum)",
             aggregate = "sum",
             format = colFormat(digits=0)
-            ),
+          ),
           `Exiting_Physics_Masters` = colDef(
-            name = "Exiting Physics Masters\n(Accum)",
+            name = "Exiting Physics Masters\n (Accum)",
             aggregate = "sum",
             format = colFormat(digits=0)
-            ),
+          ),
           `Fall_FirstYear_Graduate_Student_Enrollments` = colDef(
-            name = "First-Year Grad Student Enrollment (Fall)\n(Averaged)",
+            name = "First-Year Grad Student Enrollment (Fall)\n (Averaged)",
             aggregate = "mean",
-            ),
+          ),
           `Physics_Bachelors` = colDef(
-            name = "Physics Bachelors\n(Accum)",
+            name = "Physics Bachelors\n (Accum)",
             aggregate = "sum",
             format = colFormat(digits=0)
-            ),
+          ),
           `Fall_Senior_Enrollments` = colDef(
-            name = "Senior Enrollment (Fall)\n(Averaged)",
+            name = "Senior Enrollment (Fall)\n (Averaged)",
             aggregate = "mean",
-            ),
+          ),
           `Fall_Junior_Enrollments` = colDef(
-            name = "Junior Enrollment (Fall)\n(Averaged)",
+            name = "Junior Enrollment (Fall)\n (Averaged)",
             aggregate = "mean",
-            ),
+          ),
           `FirstTerm_Introductory_Physics_Course_Enrollments` = colDef(
-            name = "First-Term Intro Physics Course Enrollment\n(Averaged)",
+            name = "First-Term Intro Physics Course Enrollment\n (Averaged)",
             aggregate = "mean",
-            ),
+          ),
           `FirstTerm_Introductory_Physical_Science_and_Astronomy_Course_Enrollments` = colDef(
-            name = "First-Term Intro Phys. Sci. and Astro. Course Enrollment\n(Averaged)",
+            name = "First-Term Intro Phys. Sci. and Astro. Course Enrollment\n (Averaged)",
             aggregate = "mean",
-            ),
+          ),
           `Fall_NonUS_Graduate_Student_Enrollments` = colDef(
-            name = "Non-US Grad Student Enrollment (Fall)\n(Averaged)",
+            name = "Non-US Grad Student Enrollment (Fall)\n (Averaged)",
             aggregate = "mean",
-            ),
+          ),
           `Astro_Program` = colDef(
             name = "Astro Program?",
+            minWidth = 64,
             align = "right",
             aggregate = "unique"
-            )
+          )
         )
     )
 
@@ -295,6 +318,9 @@ shiny::fluidPage(
       # DataTable
       rxtbl
     )
+  ),
+  shiny::fluidRow(
+    # TODO :> add line-graph over time here using selected data from table
   )
 )
 ```

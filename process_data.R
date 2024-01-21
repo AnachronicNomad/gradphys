@@ -167,7 +167,8 @@ process_data <- \(DATA_DIR) {
       Institution = Institution |>
         gsub("'", '', x = _) |>
         gsub("*", '', x = _) |>
-        trimws(which = "both")
+        trimws(which = "both") |>
+        str_squish()
     ) |>
     #####
     ##  transform Institution names for continuity
