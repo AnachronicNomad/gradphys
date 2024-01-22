@@ -94,6 +94,8 @@ Data at the individual observation level (foreach `Institution`, foreach `Year`)
 library(tidyverse)
 library(reactable)
 library(ggplot2)
+library(ggsci)
+library(wesanderson)
 library(plotly)
 library(htmltools)
 library(crosstalk)
@@ -108,7 +110,7 @@ source('./process_data.R', local = knitr::knit_global())
 ##########
 rosterdata <- process_data(DATA_DIR);
 
-tdata <- SharedData$new(rosterdata, group = 'Institutions');
+tdata <- SharedData$new(rosterdata, group = 'linegrphs');
 
 #####
 ##  Generate Reactable data table
@@ -650,30 +652,64 @@ shiny::fluidPage(
           tags$div(
             id = 'graphs',
             tags$ul(
-              class = 'nav nav-pills',
+              id = "linegrph_tabs",
+              class = 'nav nav-pills mb-3',
+              role = "tablist",
               tags$li(
                 class = 'nav-item',
+                role = 'presentation',
+                tags$button(
+                  class = 'nav-link active',
+                  id = 'linegraph_physicsphd-tab',
+                  `data-bs-toggle` = 'pill',
+                  `data-bs-target` = '#linegrph_physicsphd',
+                  type = 'button',
+                  role = 'tab',
+                  `aria-controls` = 'linegrph_physicsphd',
+                  `aria-selected` = 'true',
+                  "PhDs"
+                )
+              )
+            ),
+            tags$div(
+              id = 'linegrph_tabs-content',
+              tags$div(
+                class = 'tab-pane show active',
+                id = 'linegrph_physicsphd',
+                role = 'tabpanel',
+                `aria-labelledby` = 'linegrph_physicsphd-tab',
                 ggplotly(
                   width = 0.9*1280,
                   height = 0.9*720,
                   tooltip = c('Year', 'Physics_PhDs', 'Institution'),
                   p = ggplot(
-                              tdata, 
-                              aes(Year, Physics_PhDs),
-                              ) +
-                              geom_point(
-                                aes(group = Institution, color = Institution),
-                                shape = 19,
-                                size = 0.3,
-                                alpha = 0.7
-                              ) +
-                              geom_line(
-                                aes(group = Institution, color = Institution),
-                                alpha = 0.2
-                              ) +
-                              geom_smooth()
-                    
-                )
+                        tdata, 
+                        aes(
+                           x = Year, 
+                           y = Physics_PhDs, 
+                           group = Institution, color = Institution
+                        )) +
+                        geom_point(
+                          shape = 19,
+                          size = 0.3,
+                          alpha = 0.7
+                        ) +
+                        geom_line(
+                          alpha = 0.8,
+                          linewidth = 1,
+                        ) + 
+                        labs(
+                          title = "Conferred Physics PhDs by Institution per Year",
+                          x = "Year",
+                          y = "Physics PhDs"
+                        ) +
+                        scale_color_manual( 
+                          values = rep( 
+                            pal_jama()(7),
+                            (length(unique(rosterdata$Institution)) / 7) + 7 
+                          )
+                        )
+                ) |> highlight( opacityDim = 0.06 )
               )
             )
           )
