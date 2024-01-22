@@ -17,6 +17,7 @@ output:
       bootswatch: spacelab
       bslib: TRUE
     number_sections: true
+    self_contained: true
 date: "2023-12-21"
 ---
 
@@ -421,7 +422,7 @@ shiny::fluidPage(
                   )"
                 ),
                 tags$label(
-                  "Total Grad Students",
+                  "Total Grad Stdnts",
                   class = "form-check-label",
                   `for` = "vis_select-state",
                 )
@@ -484,7 +485,7 @@ shiny::fluidPage(
                   )"
                 ),
                 tags$label(
-                  "First-Year Grad Stdnts",
+                  "FirstYear Grad Stdnts",
                   class = "form-check-label",
                   `for` = "vis_select-state",
                 )
@@ -568,7 +569,7 @@ shiny::fluidPage(
                   )"
                 ),
                 tags$label(
-                  "Phys 1+2 Enrollments",
+                  "Intro Phys",
                   class = "form-check-label",
                   `for` = "vis_select-state",
                 )
@@ -589,7 +590,7 @@ shiny::fluidPage(
                   )"
                 ),
                 tags$label(
-                  "PhySci+Astro Enrollments",
+                  "PhySci+Astro",
                   class = "form-check-label",
                   `for` = "vis_select-state",
                 )
@@ -610,7 +611,7 @@ shiny::fluidPage(
                   )"
                 ),
                 tags$label(
-                  "Non-US Grad Stdnts",
+                  "NonUS Grad Stdnts",
                   class = "form-check-label",
                   `for` = "vis_select-state",
                 )
@@ -650,40 +651,162 @@ shiny::fluidPage(
       htmltools::browsable(
         tagList(
           tags$div(
-            id = 'graphs',
-            tags$ul(
-              id = "linegrph_tabs",
-              class = 'nav nav-pills mb-3',
-              role = "tablist",
-              tags$li(
-                class = 'nav-item',
-                role = 'presentation',
+            id = 'linegrphs',
+            tags$nav(
+              tags$div(
+                class = "nav nav-tabs",
+                role = "tablist",
+                id = "linegrphs-tabs",
+                
+                # PHDs
                 tags$button(
                   class = 'nav-link active',
-                  id = 'linegraph_physicsphd-tab',
-                  `data-bs-toggle` = 'pill',
-                  `data-bs-target` = '#linegrph_physicsphd',
+                  `data-bs-toggle` = 'tab',
                   type = 'button',
                   role = 'tab',
-                  `aria-controls` = 'linegrph_physicsphd',
                   `aria-selected` = 'true',
+                  `data-bs-target` = '#linegrph_physicsphd-tabcontent',
+                  `aria-controls` = 'linegrph_physicsphd-tabcontent',
+                  id = 'linegraph_physicsphd-tab',
                   "PhDs"
-                )
-              )
+                ),
+                
+                # Masters
+                tags$button(
+                  class = 'nav-link',
+                  `data-bs-toggle` = 'tab',
+                  type = 'button',
+                  role = 'tab',
+                  `aria-selected` = 'false',
+                  `data-bs-target` = '#linegrph_masters-tabcontent',
+                  `aria-controls` = 'linegrph_masters-tabcontent',
+                  id = 'linegraph_masters-tab',
+                  "Masters"
+                ),
+                
+                # Total Grad Stdnts
+                tags$button(
+                  class = 'nav-link',
+                  `data-bs-toggle` = 'tab',
+                  type = 'button',
+                  role = 'tab',
+                  `aria-selected` = 'false',
+                  `data-bs-target` = '#linegrph_totalgrads-tabcontent',
+                  `aria-controls` = 'linegrph_totalgrads-tabcontent',
+                  id = 'linegraph_totalgrads-tab',
+                  "Total Grad Stdnts"
+                ),
+                
+                # FirstYear Grad Stdnts
+                tags$button(
+                  class = 'nav-link',
+                  `data-bs-toggle` = 'tab',
+                  type = 'button',
+                  role = 'tab',
+                  `aria-selected` = 'false',
+                  `data-bs-target` = '#linegrph_fygrads-tabcontent',
+                  `aria-controls` = 'linegrph_fygrads-tabcontent',
+                  id = 'linegraph_fygrads-tab',
+                  "FirstYear Grad Stdnts"
+                ),
+                
+                # NonUS Grad Stdnts
+                tags$button(
+                  class = 'nav-link',
+                  `data-bs-toggle` = 'tab',
+                  type = 'button',
+                  role = 'tab',
+                  `aria-selected` = 'false',
+                  `data-bs-target` = '#linegrph_nonusgrads-tabcontent',
+                  `aria-controls` = 'linegrph_nonusgrads-tabcontent',
+                  id = 'linegraph_nonusgrads-tab',
+                  "NonUS Grad Stdnts"
+                ),
+                
+                # Bachelors
+                tags$button(
+                  class = 'nav-link',
+                  `data-bs-toggle` = 'tab',
+                  type = 'button',
+                  role = 'tab',
+                  `aria-selected` = 'false',
+                  `data-bs-target` = '#linegrph_bachelors-tabcontent',
+                  `aria-controls` = 'linegrph_bachelors-tabcontent',
+                  id = 'linegraph_bachelors-tab',
+                  "Bachelors"
+                ),
+                
+                # Seniors
+                tags$button(
+                  class = 'nav-link',
+                  `data-bs-toggle` = 'tab',
+                  type = 'button',
+                  role = 'tab',
+                  `aria-selected` = 'false',
+                  `data-bs-target` = '#linegrph_seniors-tabcontent',
+                  `aria-controls` = 'linegrph_seniors-tabcontent',
+                  id = 'linegraph_seniors-tab',
+                  "Seniors"
+                ),
+                
+                # Juniors
+                tags$button(
+                  class = 'nav-link',
+                  `data-bs-toggle` = 'tab',
+                  type = 'button',
+                  role = 'tab',
+                  `aria-selected` = 'false',
+                  `data-bs-target` = '#linegrph_juniors-tabcontent',
+                  `aria-controls` = 'linegrph_juniors-tabcontent',
+                  id = 'linegraph_juniors-tab',
+                  "Juniors"
+                ),
+                
+                # Intro Phys
+                tags$button(
+                  class = 'nav-link',
+                  `data-bs-toggle` = 'tab',
+                  type = 'button',
+                  role = 'tab',
+                  `aria-selected` = 'false',
+                  `data-bs-target` = '#linegrph_introphys-tabcontent',
+                  `aria-controls` = 'linegrph_introphys-tabcontent',
+                  id = 'linegraph_introphys-tab',
+                  "Intro Phys"
+                ),
+                
+                # PhySci+Astro
+                tags$button(
+                  class = 'nav-link',
+                  `data-bs-toggle` = 'tab',
+                  type = 'button',
+                  role = 'tab',
+                  `aria-selected` = 'false',
+                  `data-bs-target` = '#linegrph_physastro-tabcontent',
+                  `aria-controls` = 'linegrph_physastro-tabcontent',
+                  id = 'linegraph_physastro-tab',
+                  "PhySci+Astro"
+                ),
+                
+              ),
             ),
+            
             tags$div(
-              id = 'linegrph_tabs-content',
+              class = 'tab-content',
+              id = 'linegrph_tabscontent',
+              
+              # PhDs
               tags$div(
-                class = 'tab-pane show active',
-                id = 'linegrph_physicsphd',
+                class = 'tab-pane fade show active',
                 role = 'tabpanel',
                 `aria-labelledby` = 'linegrph_physicsphd-tab',
+                id = 'linegrph_physicsphd-tabcontent',
+                
                 ggplotly(
                   width = 0.9*1280,
                   height = 0.9*720,
-                  tooltip = c('Year', 'Physics_PhDs', 'Institution'),
                   p = ggplot(
-                        tdata, 
+                        tdata,
                         aes(
                            x = Year, 
                            y = Physics_PhDs, 
@@ -709,8 +832,440 @@ shiny::fluidPage(
                             (length(unique(rosterdata$Institution)) / 7) + 7 
                           )
                         )
-                ) |> highlight( opacityDim = 0.06 )
-              )
+                ) |> 
+                style(
+                  showlegend = F, traces = c(1:length(unique(rosterdata$Institutions)))
+                ) |>
+                highlight( 
+                  opacityDim = 0.06,
+                  selected = attrs_selected(showlegend = T)
+                )
+              ),
+              
+              # Masters
+              tags$div(
+                class = 'tab-pane fade',
+                role = 'tabpanel',
+                `aria-labelledby` = 'linegrph_masters-tab',
+                id = 'linegrph_masters-tabcontent',
+                
+                ggplotly(
+                  width = 0.9*1280,
+                  height = 0.9*720,
+                  p = ggplot(
+                        tdata,
+                        aes(
+                           x = Year, 
+                           y = `Exiting_Physics_Masters`, 
+                           group = Institution, color = Institution
+                        )) +
+                        geom_point(
+                          shape = 19,
+                          size = 0.3,
+                          alpha = 0.7
+                        ) +
+                        geom_line(
+                          alpha = 0.8,
+                          linewidth = 1,
+                        ) + 
+                        labs(
+                          title = "Conferred Exiting Masters by Institution per Year",
+                          x = "Year",
+                          y = "Exiting Masters"
+                        ) +
+                        scale_color_manual( 
+                          values = rep( 
+                            pal_jama()(7),
+                            (length(unique(rosterdata$Institution)) / 7) + 7 
+                          )
+                        )
+                ) |> 
+                style(
+                  showlegend = F, traces = c(1:length(unique(rosterdata$Institutions)))
+                ) |>
+                highlight( 
+                  opacityDim = 0.06,
+                  selected = attrs_selected(showlegend = T)
+                )
+              ),
+              
+              # Total Grad Stdnts
+              tags$div(
+                class = 'tab-pane fade',
+                role = 'tabpanel',
+                `aria-labelledby` = 'linegrph_totalgrads-tab',
+                id = 'linegrph_totalgrads-tabcontent',
+                
+                ggplotly(
+                  width = 0.9*1280,
+                  height = 0.9*720,
+                  p = ggplot(
+                        tdata,
+                        aes(
+                           x = Year, 
+                           y = `Fall_Total_Graduate_Student_Enrollments`, 
+                           group = Institution, color = Institution
+                        )) +
+                        geom_point(
+                          shape = 19,
+                          size = 0.3,
+                          alpha = 0.7
+                        ) +
+                        geom_line(
+                          alpha = 0.8,
+                          linewidth = 1,
+                        ) + 
+                        labs(
+                          title = "Total (Fall) Graduate Student Enrollments by Institution per Year",
+                          x = "Year",
+                          y = "Total (Fall) Graduate Student Enrollments"
+                        ) +
+                        scale_color_manual( 
+                          values = rep( 
+                            pal_jama()(7),
+                            (length(unique(rosterdata$Institution)) / 7) + 7 
+                          )
+                        )
+                ) |> 
+                style(
+                  showlegend = F, traces = c(1:length(unique(rosterdata$Institutions)))
+                ) |>
+                highlight( 
+                  opacityDim = 0.06,
+                  selected = attrs_selected(showlegend = T)
+                )
+              ),
+              
+              # FirstYear Grad Stdnts
+              tags$div(
+                class = 'tab-pane fade',
+                role = 'tabpanel',
+                `aria-labelledby` = 'linegrph_fygrads-tab',
+                id = 'linegrph_fygrads-tabcontent',
+                
+                ggplotly(
+                  width = 0.9*1280,
+                  height = 0.9*720,
+                  p = ggplot(
+                        tdata,
+                        aes(
+                           x = Year, 
+                           y = `Fall_FirstYear_Graduate_Student_Enrollments`, 
+                           group = Institution, color = Institution
+                        )) +
+                        geom_point(
+                          shape = 19,
+                          size = 0.3,
+                          alpha = 0.7
+                        ) +
+                        geom_line(
+                          alpha = 0.8,
+                          linewidth = 1,
+                        ) + 
+                        labs(
+                          title = "(Fall) First-Year Graduate Student Enrollments by Institution per Year",
+                          x = "Year",
+                          y = "(Fall) First-Year Graduate Student Enrollments"
+                        ) +
+                        scale_color_manual( 
+                          values = rep( 
+                            pal_jama()(7),
+                            (length(unique(rosterdata$Institution)) / 7) + 7 
+                          )
+                        )
+                ) |> 
+                style(
+                  showlegend = F, traces = c(1:length(unique(rosterdata$Institutions)))
+                ) |>
+                highlight( 
+                  opacityDim = 0.06,
+                  selected = attrs_selected(showlegend = T)
+                )
+              ),
+              
+              # NonUS Grad Stdnts
+              tags$div(
+                class = 'tab-pane fade',
+                role = 'tabpanel',
+                `aria-labelledby` = 'linegrph_nonusgrads-tab',
+                id = 'linegrph_nonusgrads-tabcontent',
+                
+                ggplotly(
+                  width = 0.9*1280,
+                  height = 0.9*720,
+                  p = ggplot(
+                        tdata,
+                        aes(
+                           x = Year, 
+                           y = `Fall_NonUS_Graduate_Student_Enrollments`, 
+                           group = Institution, color = Institution
+                        )) +
+                        geom_point(
+                          shape = 19,
+                          size = 0.3,
+                          alpha = 0.7
+                        ) +
+                        geom_line(
+                          alpha = 0.8,
+                          linewidth = 1,
+                        ) + 
+                        labs(
+                          title = "(Fall) Non-US Graduate Student Enrollments by Institution per Year",
+                          x = "Year",
+                          y = "(Fall) Non-US Graduate Student Enrollments"
+                        ) +
+                        scale_color_manual( 
+                          values = rep( 
+                            pal_jama()(7),
+                            (length(unique(rosterdata$Institution)) / 7) + 7 
+                          )
+                        )
+                ) |> 
+                style(
+                  showlegend = F, traces = c(1:length(unique(rosterdata$Institutions)))
+                ) |>
+                highlight( 
+                  opacityDim = 0.06,
+                  selected = attrs_selected(showlegend = T)
+                )
+              ),
+              
+              # Bachelors
+              tags$div(
+                class = 'tab-pane fade',
+                role = 'tabpanel',
+                `aria-labelledby` = 'linegrph_bachelors-tab',
+                id = 'linegrph_bachelors-tabcontent',
+                
+                ggplotly(
+                  width = 0.9*1280,
+                  height = 0.9*720,
+                  p = ggplot(
+                        tdata,
+                        aes(
+                           x = Year, 
+                           y = `Physics_Bachelors`, 
+                           group = Institution, color = Institution
+                        )) +
+                        geom_point(
+                          shape = 19,
+                          size = 0.3,
+                          alpha = 0.7
+                        ) +
+                        geom_line(
+                          alpha = 0.8,
+                          linewidth = 1,
+                        ) + 
+                        labs(
+                          title = "Physics Bachelors Conferred by Institution per Year",
+                          x = "Year",
+                          y = "Physics Bachelors Conferred"
+                        ) +
+                        scale_color_manual( 
+                          values = rep( 
+                            pal_jama()(7),
+                            (length(unique(rosterdata$Institution)) / 7) + 7 
+                          )
+                        )
+                ) |> 
+                style(
+                  showlegend = F, traces = c(1:length(unique(rosterdata$Institutions)))
+                ) |>
+                highlight( 
+                  opacityDim = 0.06,
+                  selected = attrs_selected(showlegend = T)
+                )
+              ),
+              
+              # Seniors
+              tags$div(
+                class = 'tab-pane fade',
+                role = 'tabpanel',
+                `aria-labelledby` = 'linegrph_seniors-tab',
+                id = 'linegrph_seniors-tabcontent',
+                
+                ggplotly(
+                  width = 0.9*1280,
+                  height = 0.9*720,
+                  p = ggplot(
+                        tdata,
+                        aes(
+                           x = Year, 
+                           y = `Fall_Senior_Enrollments`, 
+                           group = Institution, color = Institution
+                        )) +
+                        geom_point(
+                          shape = 19,
+                          size = 0.3,
+                          alpha = 0.7
+                        ) +
+                        geom_line(
+                          alpha = 0.8,
+                          linewidth = 1,
+                        ) + 
+                        labs(
+                          title = "(Fall) Senior Enrollments by Institution per Year",
+                          x = "Year",
+                          y = "(Fall) Senior Enrollments"
+                        ) +
+                        scale_color_manual( 
+                          values = rep( 
+                            pal_jama()(7),
+                            (length(unique(rosterdata$Institution)) / 7) + 7 
+                          )
+                        )
+                ) |> 
+                style(
+                  showlegend = F, traces = c(1:length(unique(rosterdata$Institutions)))
+                ) |>
+                highlight( 
+                  opacityDim = 0.06,
+                  selected = attrs_selected(showlegend = T)
+                )
+              ),
+              
+              # Juniors
+              tags$div(
+                class = 'tab-pane fade',
+                role = 'tabpanel',
+                `aria-labelledby` = 'linegrph_juniors-tab',
+                id = 'linegrph_juniors-tabcontent',
+                
+                ggplotly(
+                  width = 0.9*1280,
+                  height = 0.9*720,
+                  p = ggplot(
+                        tdata,
+                        aes(
+                           x = Year, 
+                           y = `Fall_Junior_Enrollments`, 
+                           group = Institution, color = Institution
+                        )) +
+                        geom_point(
+                          shape = 19,
+                          size = 0.3,
+                          alpha = 0.7
+                        ) +
+                        geom_line(
+                          alpha = 0.8,
+                          linewidth = 1,
+                        ) + 
+                        labs(
+                          title = "(Fall) Junior Enrollments by Institution per Year",
+                          x = "Year",
+                          y = "(Fall) Junior Enrollments"
+                        ) +
+                        scale_color_manual( 
+                          values = rep( 
+                            pal_jama()(7),
+                            (length(unique(rosterdata$Institution)) / 7) + 7 
+                          )
+                        )
+                ) |> 
+                style(
+                  showlegend = F, traces = c(1:length(unique(rosterdata$Institutions)))
+                ) |>
+                highlight( 
+                  opacityDim = 0.06,
+                  selected = attrs_selected(showlegend = T)
+                )
+              ),
+              
+              # Intro Phys
+              tags$div(
+                class = 'tab-pane fade',
+                role = 'tabpanel',
+                `aria-labelledby` = 'linegrph_introphys-tab',
+                id = 'linegrph_introphys-tabcontent',
+                
+                ggplotly(
+                  width = 0.9*1280,
+                  height = 0.9*720,
+                  p = ggplot(
+                        tdata,
+                        aes(
+                           x = Year, 
+                           y = `FirstTerm_Introductory_Physics_Course_Enrollments`, 
+                           group = Institution, color = Institution
+                        )) +
+                        geom_point(
+                          shape = 19,
+                          size = 0.3,
+                          alpha = 0.7
+                        ) +
+                        geom_line(
+                          alpha = 0.8,
+                          linewidth = 1,
+                        ) + 
+                        labs(
+                          title = "First-Term Intro Physics Course Enrollments by Institution per Year",
+                          x = "Year",
+                          y = "First-Term Intro Physics Course Enrollments"
+                        ) +
+                        scale_color_manual( 
+                          values = rep( 
+                            pal_jama()(7),
+                            (length(unique(rosterdata$Institution)) / 7) + 7 
+                          )
+                        )
+                ) |> 
+                style(
+                  showlegend = F, traces = c(1:length(unique(rosterdata$Institutions)))
+                ) |>
+                highlight( 
+                  opacityDim = 0.06,
+                  selected = attrs_selected(showlegend = T)
+                )
+              ),
+              
+              # PhySci+Astro
+              tags$div(
+                class = 'tab-pane fade',
+                role = 'tabpanel',
+                `aria-labelledby` = 'linegrph_physastro-tab',
+                id = 'linegrph_physastro-tabcontent',
+                
+                ggplotly(
+                  width = 0.9*1280,
+                  height = 0.9*720,
+                  p = ggplot(
+                        tdata,
+                        aes(
+                           x = Year, 
+                           y = `FirstTerm_Introductory_Physical_Science_and_Astronomy_Course_Enrollments`, 
+                           group = Institution, color = Institution
+                        )) +
+                        geom_point(
+                          shape = 19,
+                          size = 0.3,
+                          alpha = 0.7
+                        ) +
+                        geom_line(
+                          alpha = 0.8,
+                          linewidth = 1,
+                        ) + 
+                        labs(
+                          title = "First-Term Intro Physical Science and Astronomy Course Enrollments by Institution per Year",
+                          x = "Year",
+                          y = "First-Term Intro Phys. Sci. and Astro. Course Enrollments"
+                        ) +
+                        scale_color_manual( 
+                          values = rep( 
+                            pal_jama()(7),
+                            (length(unique(rosterdata$Institution)) / 7) + 7 
+                          )
+                        )
+                ) |> 
+                style(
+                  showlegend = F, traces = c(1:length(unique(rosterdata$Institutions)))
+                ) |>
+                highlight( 
+                  opacityDim = 0.06,
+                  selected = attrs_selected(showlegend = T)
+                )
+              ),
+              
+              
             )
           )
         )
