@@ -650,7 +650,7 @@ shiny::fluidPage(
           tags$div(
             id = 'graphs',
             tags$ul(
-              class = 'nav',
+              class = 'nav nav-pills',
               tags$li(
                 class = 'nav-item',
                 ggplotly(
