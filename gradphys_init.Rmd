@@ -1101,7 +1101,7 @@ shiny::fluidPage(
                   opacityDim = 0.02,
                   persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                ) |> toWebGL()
+                ) # |> toWebGL()
               ),
               
               # Masters
@@ -1152,7 +1152,7 @@ shiny::fluidPage(
                   opacityDim = 0.02,
                   persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                ) |> toWebGL()
+                ) # |> toWebGL()
               ),
               
               # Total Grad Stdnts
@@ -1203,7 +1203,7 @@ shiny::fluidPage(
                   opacityDim = 0.02,
                   persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                ) |> toWebGL()
+                ) # |> toWebGL()
               ),
               
               # FirstYear Grad Stdnts
@@ -1254,7 +1254,7 @@ shiny::fluidPage(
                   opacityDim = 0.02,
                   persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                ) |> toWebGL()
+                ) # |> toWebGL()
               ),
               
               # NonUS Grad Stdnts
@@ -1305,7 +1305,7 @@ shiny::fluidPage(
                   opacityDim = 0.02,
                   persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                ) |> toWebGL()
+                ) # |> toWebGL()
               ),
               
               # Bachelors
@@ -1356,7 +1356,7 @@ shiny::fluidPage(
                   opacityDim = 0.02,
                   persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                ) |> toWebGL()
+                ) # |> toWebGL()
               ),
               
               # Seniors
@@ -1407,7 +1407,7 @@ shiny::fluidPage(
                   opacityDim = 0.02,
                   persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                ) |> toWebGL()
+                ) # |> toWebGL()
               ),
               
               # Juniors
@@ -1458,7 +1458,7 @@ shiny::fluidPage(
                   opacityDim = 0.02,
                   persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                ) |> toWebGL()
+                ) # |> toWebGL()
               ),
               
               # Intro Phys
@@ -1509,7 +1509,7 @@ shiny::fluidPage(
                   opacityDim = 0.02,
                   persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                ) |> toWebGL()
+                ) # |> toWebGL()
               ),
               
               # PhySci+Astro
@@ -1560,7 +1560,7 @@ shiny::fluidPage(
                   opacityDim = 0.02,
                   persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                ) |> toWebGL()
+                ) # |> toWebGL()
               ),
               
             )
