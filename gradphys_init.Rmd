@@ -90,18 +90,18 @@ Data at the individual observation level (foreach `Institution`, foreach `Year`)
 ------------------------------------------------------------------------
 
 ```{r message=F, warning=F, message=F, paged.print=TRUE}
-
 library(tidyverse)
 library(reactable)
 library(ggplot2)
 library(ggsci)
 library(ggformula)
-library(wesanderson)
 library(plotly)
 library(htmltools)
 library(crosstalk)
+
 DATA_DIR = './data/xlsx_edit/'
 source('./process_data.R', local = knitr::knit_global())
+
 ##########
 ##-----##
 ##----##
@@ -111,16 +111,15 @@ source('./process_data.R', local = knitr::knit_global())
 ##########
 rosterdata <- process_data(DATA_DIR);
 
-####
+#####
 ## Build sharedData instances with enumerated `row.names` (keys); filter and dispatch auto-linked
 ## SharedData s.t. selections can be made across table and graphs while allowing interpolated spline linegraphs
-tdata <- SharedData$new(
-  rosterdata,
-  group = 'linegrph'
-);
+#####
+tdata <- 
+  highlight_key(rosterdata, ~Institution, group = 'linegrph')
 
 d = list(
-  `Physics_PhDs` = SharedData$new(
+  `Physics_PhDs` = highlight_key(
     rosterdata |>
       filter(!is.na(Physics_PhDs)) |>
       (\(.tbl) {
@@ -142,10 +141,10 @@ d = list(
     
         .rest
       })(),
-    key = ~idx,
+    key = ~Institution,
     group = 'linegrph'
   ),
-  `Exiting_Physics_Masters` = SharedData$new(
+  `Exiting_Physics_Masters` = highlight_key(
     rosterdata |>
       filter(!is.na(Exiting_Physics_Masters)) |>
       (\(.tbl) {
@@ -167,10 +166,10 @@ d = list(
     
         .rest
       })(),
-    key = ~idx,
+    key = ~Institution,
     group = 'linegrph'
   ),
-  `Fall_FirstYear_Graduate_Student_Enrollments` = SharedData$new(
+  `Fall_FirstYear_Graduate_Student_Enrollments` = highlight_key(
     rosterdata |>
       filter(!is.na(Fall_FirstYear_Graduate_Student_Enrollments)) |>
       (\(.tbl) {
@@ -192,10 +191,10 @@ d = list(
     
         .rest
       })(),
-    key = ~idx,
+    key = ~Institution,
     group = 'linegrph'
   ),
-  `Fall_NonUS_Graduate_Student_Enrollments` = SharedData$new(
+  `Fall_NonUS_Graduate_Student_Enrollments` = highlight_key(
     rosterdata |>
       filter(!is.na(Fall_NonUS_Graduate_Student_Enrollments)) |>
       (\(.tbl) {
@@ -217,10 +216,10 @@ d = list(
     
         .rest
       })(),
-    key = ~idx,
+    key = ~Institution,
     group = 'linegrph'
   ),
-  `Fall_Total_Graduate_Student_Enrollments` = SharedData$new(
+  `Fall_Total_Graduate_Student_Enrollments` = highlight_key(
     rosterdata |>
       filter(!is.na(Fall_Total_Graduate_Student_Enrollments)) |>
       (\(.tbl) {
@@ -242,10 +241,10 @@ d = list(
     
         .rest
       })(),
-    key = ~idx,
+    key = ~Institution,
     group = 'linegrph'
   ),
-  `Physics_Bachelors` = SharedData$new(
+  `Physics_Bachelors` = highlight_key(
     rosterdata |>
       filter(!is.na(Physics_Bachelors)) |>
       (\(.tbl) {
@@ -267,10 +266,10 @@ d = list(
     
         .rest
       })(),
-    key = ~idx,
+    key = ~Institution,
     group = 'linegrph'
   ),
-  `Fall_Senior_Enrollments` = SharedData$new(
+  `Fall_Senior_Enrollments` = highlight_key(
     rosterdata |>
       filter(!is.na(Fall_Senior_Enrollments)) |>
       (\(.tbl) {
@@ -292,10 +291,10 @@ d = list(
     
         .rest
       })(),
-    key = ~idx,
+    key = ~Institution,
     group = 'linegrph'
   ),
-  `Fall_Junior_Enrollments` = SharedData$new(
+  `Fall_Junior_Enrollments` = highlight_key(
     rosterdata |>
       filter(!is.na(Fall_Junior_Enrollments)) |>
       (\(.tbl) {
@@ -317,10 +316,10 @@ d = list(
     
         .rest
       })(),
-    key = ~idx,
+    key = ~Institution,
     group = 'linegrph'
   ),
-  `FirstTerm_Introductory_Physics_Course_Enrollments` = SharedData$new(
+  `FirstTerm_Introductory_Physics_Course_Enrollments` = highlight_key(
     rosterdata |>
       filter(!is.na(FirstTerm_Introductory_Physics_Course_Enrollments)) |>
       (\(.tbl) {
@@ -342,10 +341,10 @@ d = list(
     
         .rest
       })(),
-    key = ~idx,
+    key = ~Institution,
     group = 'linegrph'
   ),
-  `FirstTerm_Introductory_Physical_Science_and_Astronomy_Course_Enrollments` = SharedData$new(
+  `FirstTerm_Introductory_Physical_Science_and_Astronomy_Course_Enrollments` = highlight_key(
     rosterdata |>
       filter(!is.na(FirstTerm_Introductory_Physical_Science_and_Astronomy_Course_Enrollments)) |>
       (\(.tbl) {
@@ -367,7 +366,7 @@ d = list(
     
         .rest
       })(),
-    key = ~idx,
+    key = ~Institution,
     group = 'linegrph'
   )
 )
@@ -394,7 +393,7 @@ rxtbl <- tdata |>
         pageSizeOptions = c(6, 12, 18),
         paginationType = "jump",
         selection = "multiple",
-        onClick = "select",
+        #onClick = "select",
         height = 768,
         rowStyle = JS("
           function(rowInfo, state) {
@@ -910,7 +909,7 @@ shiny::fluidPage(
       htmltools::browsable(
         tagList(
           tags$div(
-            id = 'linegrphs',
+            id = 'linegrphs-all',
             tags$nav(
               tags$div(
                 class = "nav nav-tabs",
@@ -1100,8 +1099,9 @@ shiny::fluidPage(
                 ) |>
                 highlight( 
                   opacityDim = 0.02,
+                  persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                )
+                ) |> toWebGL()
               ),
               
               # Masters
@@ -1150,8 +1150,9 @@ shiny::fluidPage(
                 ) |>
                 highlight( 
                   opacityDim = 0.02,
+                  persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                )
+                ) |> toWebGL()
               ),
               
               # Total Grad Stdnts
@@ -1200,8 +1201,9 @@ shiny::fluidPage(
                 ) |>
                 highlight( 
                   opacityDim = 0.02,
+                  persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                )
+                ) |> toWebGL()
               ),
               
               # FirstYear Grad Stdnts
@@ -1250,8 +1252,9 @@ shiny::fluidPage(
                 ) |>
                 highlight( 
                   opacityDim = 0.02,
+                  persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                )
+                ) |> toWebGL()
               ),
               
               # NonUS Grad Stdnts
@@ -1300,8 +1303,9 @@ shiny::fluidPage(
                 ) |>
                 highlight( 
                   opacityDim = 0.02,
+                  persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                )
+                ) |> toWebGL()
               ),
               
               # Bachelors
@@ -1350,8 +1354,9 @@ shiny::fluidPage(
                 ) |>
                 highlight( 
                   opacityDim = 0.02,
+                  persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                )
+                ) |> toWebGL()
               ),
               
               # Seniors
@@ -1400,8 +1405,9 @@ shiny::fluidPage(
                 ) |>
                 highlight( 
                   opacityDim = 0.02,
+                  persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                )
+                ) |> toWebGL()
               ),
               
               # Juniors
@@ -1450,8 +1456,9 @@ shiny::fluidPage(
                 ) |>
                 highlight( 
                   opacityDim = 0.02,
+                  persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                )
+                ) |> toWebGL()
               ),
               
               # Intro Phys
@@ -1500,8 +1507,9 @@ shiny::fluidPage(
                 ) |>
                 highlight( 
                   opacityDim = 0.02,
+                  persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                )
+                ) |> toWebGL()
               ),
               
               # PhySci+Astro
@@ -1550,8 +1558,9 @@ shiny::fluidPage(
                 ) |>
                 highlight( 
                   opacityDim = 0.02,
+                  persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                )
+                ) |> toWebGL()
               ),
               
             )

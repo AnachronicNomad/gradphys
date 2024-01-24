@@ -468,7 +468,7 @@ process_data <- \(DATA_DIR) {
   data <- full_join(data, gdata)
   ## Group and Sort
   data <- data |>
-    mutate(idx = row_number()) |>
+    #mutate(idx = row_number()) |>
     ## group observations of Institution by Year, then by State
     group_by(State, Institution, Year) |>
     ## sort-asc within previous group by quantity
