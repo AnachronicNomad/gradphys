@@ -96,6 +96,7 @@ library(ggplot2)
 library(ggsci)
 library(ggformula)
 library(plotly)
+library(shiny)
 library(htmltools)
 library(crosstalk)
 
@@ -535,6 +536,7 @@ rxtbl <- tdata |>
 #####
 ##  Display Shiny with Crosstalk/htmltools widgets
 #####
+
 shiny::fluidPage(
   shiny::fluidRow(
     shiny::column(
@@ -905,7 +907,7 @@ shiny::fluidPage(
       # DataTable
       rxtbl,
       # TODO :> add line-graph over time here using selected data from table
-      ## Prints all overlaid, 
+      ## Reactive time-series graphs of tabbed quantities
       htmltools::browsable(
         tagList(
           tags$div(
@@ -1093,17 +1095,19 @@ shiny::fluidPage(
                             (length(unique(rosterdata$Institution)) / 7) + 7 
                           )
                         )
-                ) |> 
-                style(
-                  showlegend = F, traces = c(1:length(unique(rosterdata$Institutions)))
-                ) |>
-                highlight( 
-                  opacityDim = 0.02,
-                  persistent = TRUE,
-                  selected = attrs_selected(showlegend = T)
-                ) # |> toWebGL()
+                  ) |>
+                  style(
+                    showlegend = F, traces = c(1:length(unique(rosterdata$Institutions)))
+                  ) |>
+                  highlight( 
+                    opacityDim = 0.03,
+                    persistent = TRUE,
+                    selected = attrs_selected(showlegend = T)
+                  ) |> 
+                  toWebGL() |>
+                  partial_bundle()
               ),
-              
+                
               # Masters
               tags$div(
                 class = 'tab-pane fade',
@@ -1149,10 +1153,12 @@ shiny::fluidPage(
                   showlegend = F, traces = c(1:length(unique(rosterdata$Institutions)))
                 ) |>
                 highlight( 
-                  opacityDim = 0.02,
+                  opacityDim = 0.03,
                   persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                ) # |> toWebGL()
+                ) |> 
+                toWebGL() |>
+                partial_bundle()
               ),
               
               # Total Grad Stdnts
@@ -1200,10 +1206,12 @@ shiny::fluidPage(
                   showlegend = F, traces = c(1:length(unique(rosterdata$Institutions)))
                 ) |>
                 highlight( 
-                  opacityDim = 0.02,
+                  opacityDim = 0.03,
                   persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                ) # |> toWebGL()
+                ) |> 
+                toWebGL() |>
+                partial_bundle()
               ),
               
               # FirstYear Grad Stdnts
@@ -1251,10 +1259,12 @@ shiny::fluidPage(
                   showlegend = F, traces = c(1:length(unique(rosterdata$Institutions)))
                 ) |>
                 highlight( 
-                  opacityDim = 0.02,
+                  opacityDim = 0.03,
                   persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                ) # |> toWebGL()
+                ) |> 
+                toWebGL() |>
+                partial_bundle()
               ),
               
               # NonUS Grad Stdnts
@@ -1302,10 +1312,12 @@ shiny::fluidPage(
                   showlegend = F, traces = c(1:length(unique(rosterdata$Institutions)))
                 ) |>
                 highlight( 
-                  opacityDim = 0.02,
+                  opacityDim = 0.03,
                   persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                ) # |> toWebGL()
+                ) |> 
+                toWebGL() |>
+                partial_bundle()
               ),
               
               # Bachelors
@@ -1353,10 +1365,12 @@ shiny::fluidPage(
                   showlegend = F, traces = c(1:length(unique(rosterdata$Institutions)))
                 ) |>
                 highlight( 
-                  opacityDim = 0.02,
+                  opacityDim = 0.03,
                   persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                ) # |> toWebGL()
+                ) |> 
+                toWebGL() |>
+                partial_bundle()
               ),
               
               # Seniors
@@ -1404,10 +1418,12 @@ shiny::fluidPage(
                   showlegend = F, traces = c(1:length(unique(rosterdata$Institutions)))
                 ) |>
                 highlight( 
-                  opacityDim = 0.02,
+                  opacityDim = 0.03,
                   persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                ) # |> toWebGL()
+                ) |> 
+                toWebGL() |>
+                partial_bundle()
               ),
               
               # Juniors
@@ -1455,10 +1471,12 @@ shiny::fluidPage(
                   showlegend = F, traces = c(1:length(unique(rosterdata$Institutions)))
                 ) |>
                 highlight( 
-                  opacityDim = 0.02,
+                  opacityDim = 0.03,
                   persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                ) # |> toWebGL()
+                ) |> 
+                toWebGL() |>
+                partial_bundle()
               ),
               
               # Intro Phys
@@ -1506,10 +1524,12 @@ shiny::fluidPage(
                   showlegend = F, traces = c(1:length(unique(rosterdata$Institutions)))
                 ) |>
                 highlight( 
-                  opacityDim = 0.02,
+                  opacityDim = 0.03,
                   persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                ) # |> toWebGL()
+                ) |> 
+                toWebGL() |>
+                partial_bundle()
               ),
               
               # PhySci+Astro
@@ -1557,13 +1577,25 @@ shiny::fluidPage(
                   showlegend = F, traces = c(1:length(unique(rosterdata$Institutions)))
                 ) |>
                 highlight( 
-                  opacityDim = 0.02,
+                  opacityDim = 0.03,
                   persistent = TRUE,
                   selected = attrs_selected(showlegend = T)
-                ) # |> toWebGL()
+                ) |> 
+                toWebGL() |>
+                partial_bundle()
               ),
               
             )
+          ),
+          htmltools::htmlDependency(
+            name = "virtual-webgl",
+            version = "1.0.6",
+            package = "virtual-webgl",
+            src = c(
+              #file = "virtual-webgl",
+              href = "https://unpkg.com/virtual-webgl@1.0.6/src/"
+            ),
+            script = "virtual-webgl.js",
           )
         )
       )
@@ -1671,7 +1703,7 @@ print('TODO:> .')
 | `Minnesota-U of, TwinCities` |        163         |         416         |
 | `Princeton U`                |        161         |         203         |
 
-### TODO :\>
+### TODO :>
 
 -   `TODO :>` How many departments inconsistently reported data?
 
